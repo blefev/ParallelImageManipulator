@@ -11,9 +11,9 @@ namespace ParallelImageManipulator
     {
         static void Main(string[] args)
         {
-            Bitmap img = new Bitmap("D:\\School\\CSC-410 Parallel Computing\\ParallelImageManipulator\\ParallelImageManipulator\\Resources\\fractal.bmp");
+            Bitmap img = new Bitmap("D:\\School\\CSC-410 Parallel Computing\\ParallelImageManipulator\\ParallelImageManipulator\\Resources\\rgb.bmp");
             ImageManipulator im = new ImageManipulator(img);
-            im.Grayscale();
+            im.Filter("R");
             Bitmap ret = im.ToBitmap();
             ret.Save("D:\\School\\CSC-410 Parallel Computing\\ParallelImageManipulator\\ParallelImageManipulator\\output.bmp");
         }
