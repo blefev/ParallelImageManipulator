@@ -9,7 +9,7 @@ namespace ParallelImageManipulator
 {
     class ImageManipulator
     {
-        private Color[ , ] pixelMatrix;
+        private Color[,] pixels;
         private int Height;
         private int Width;
 
@@ -17,36 +17,49 @@ namespace ParallelImageManipulator
         {
             Height = startImage.Height;
             Width = startImage.Width;
-            pixelMatrix = ImageToBytes(startImage);
+            pixels = ImageToBytes(startImage);
         }
 
-        private Color[ , ] ImageToBytes(Bitmap img)
+        private Color[,] ImageToBytes(Bitmap img)
         {
-                Color[,] matrix = new Color[Height, Width];
+            Color[,] matrix = new Color[Height, Width];
 
-                for (int i = 0; i < img.Height; i++)
+            for (int i = 0; i < img.Height; i++)
+            {
+                for (int j = 0; j < img.Width; j++)
                 {
-                    for (int j = 0; j < img.Width; j++)
-                    {
-                        matrix[i , j] = img.GetPixel(i, j);
-                    }
+                    matrix[i, j] = img.GetPixel(i, j);
                 }
-                return matrix;
+            }
+            return matrix;
         }
 
         public Bitmap ToBitmap()
         {
 
-                Bitmap bitmap = new Bitmap(Width, Height);
+            Bitmap bitmap = new Bitmap(Width, Height);
 
-                for (int i = 0; i < Width; i++)
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
                 {
-                    for (int j = 0; j < Height; j++)
-                    {
-                        bitmap.SetPixel(i, j, pixelMatrix[i , j]);
-                    }
+                    bitmap.SetPixel(i, j, pixels[i, j]);
                 }
-                return bitmap;
+            }
+            return bitmap;
+        }
+
+        public void Grayscale()
+        {
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    Color px = pixels[i, j];
+                    byte grayVal = (byte)((px.R + px.G + px.B) / 3);
+                    pixels[i, j] = Color.FromArgb(px.A, grayVal, grayVal, grayVal);
+                }
+            }
         }
     }
 }
