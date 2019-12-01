@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
@@ -36,7 +34,6 @@ namespace ParallelImageManipulator
 
         public Bitmap ToBitmap()
         {
-
             Bitmap bitmap = new Bitmap(Width, Height);
 
             for (int i = 0; i < Width; i++)
@@ -79,7 +76,8 @@ namespace ParallelImageManipulator
                     byte newR = 0, newG = 0, newB = 0;
                     Color px = pixels[i, j];
 
-                    switch (color) {
+                    switch (color)
+                    {
                         case "R":
                             newR = px.R;
                             newG = (byte)(px.G - 255);

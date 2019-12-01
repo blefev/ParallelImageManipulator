@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
+﻿using System.Drawing;
+using System.IO;
 
 namespace ParallelImageManipulator
 {
@@ -11,11 +7,13 @@ namespace ParallelImageManipulator
     {
         static void Main(string[] args)
         {
-            Bitmap img = new Bitmap("D:\\School\\CSC-410 Parallel Computing\\ParallelImageManipulator\\ParallelImageManipulator\\Resources\\rgb.bmp");
+            string path = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
+
+            Bitmap img = new Bitmap($"{path}\\Resources\\rgb.bmp");
             ImageManipulator im = new ImageManipulator(img);
             im.Filter("R");
             Bitmap ret = im.ToBitmap();
-            ret.Save("D:\\School\\CSC-410 Parallel Computing\\ParallelImageManipulator\\ParallelImageManipulator\\output.bmp");
+            ret.Save($"{path}\\Output\\output.bmp");
         }
     }
 }
