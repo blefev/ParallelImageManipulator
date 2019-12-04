@@ -12,6 +12,7 @@ namespace ParallelImageManipulator
             Bitmap img = new Bitmap($"{path}\\Resources\\rgb.bmp");
             ImageManipulator im = new ImageManipulator(img);
             im.Flip(true);
+            im.Rotate(90, true);
             Bitmap ret = im.ToBitmap();
             ret.Save($"{path}\\Output\\output.bmp");
         }

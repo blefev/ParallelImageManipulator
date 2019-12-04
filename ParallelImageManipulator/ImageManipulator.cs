@@ -91,6 +91,47 @@ namespace ParallelImageManipulator
             }
         }
 
+        // True if 90-factor clockwise (right), False if 90-factor counter-clockwise (left)
+        public void Rotate(int times, bool direction)
+        {
+            // Rotate clockwise
+            if(direction)
+            {
+                for(int x = 0; x < times; x += 90)
+                {
+                    Parallel.For(0, Width, i =>
+                    {
+                        for (int j = i; j < Height - i - 1; j++)
+                        {
+                            Color temp = pixels[i][j];
+                            pixels[i][j] = pixels[Height - 1 - j][i];
+                            pixels[Height - 1 - j][i] = pixels[Height - 1 - i][Height - 1 - j];
+                            pixels[Height - 1 - i][Height - 1 - j] = pixels[j][Height - 1 - i];
+                            pixels[j][Height - 1 - i] = temp;
+                        }
+                    });
+                }
+            }
+            // Rotate counterclockwise
+            else
+            {
+                for(int x = 0; x < times; x += 90)
+                {
+                    Parallel.For(0, Width, i =>
+                    {
+                        for (int j = i; j < Height - i - 1; j++)
+                        {
+                            Color temp = pixels[i][j];
+                            pixels[i][j] = pixels[j][Height - 1 - i];
+                            pixels[j][Height - 1 - i] = pixels[Height - 1 - i][Height - 1 - j];
+                            pixels[Height - 1 - i][Height - 1 - j] = pixels[Height - 1 - j][i];
+                            pixels[Height - 1 - j][y] = temp;
+                        }
+                    });
+                }
+            }
+        }
+
         public void Filter(string color)
         {
             color = color.ToUpper();
