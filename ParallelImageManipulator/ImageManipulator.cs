@@ -61,6 +61,36 @@ namespace ParallelImageManipulator
                 }
             });
         }
+
+        //true if verical, false if horizontal
+        public void Flip(bool vertical)
+        {
+            if (vertical)
+            {
+                Parallel.For(0, Height / 2, i =>
+                {
+                    for (int j = 0; j < Width; j++)
+                    {
+                        Color temp = pixels[i, j];
+                        pixels[i, j] = pixels[Width - i - 1, j];
+                        pixels[Width - i - 1, j] = temp;
+                    }
+                });
+            }
+            else
+            {
+                Parallel.For(0, Width, i =>
+                {
+                    for (int j = 0; j < Height / 2; j++)
+                    {
+                        Color temp = pixels[i, j];
+                        pixels[i, j] = pixels[i, Width - j - 1];
+                        pixels[i, Width - j - 1] = temp;
+                    }
+                });
+            }
+        }
+
         public void Filter(string color)
         {
             color = color.ToUpper();
