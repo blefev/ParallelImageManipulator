@@ -4,60 +4,71 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-	<title>Parallel Image Manipulator</title>
+    <title>Parallel Image Manipulator</title>
 </head>
 <body>
-	<form id="form1" runat="server">
-		<div>
-			<asp:Label ID="lblinputFile" runat="server" Text="Select a jpg, png, or bmp file to manipulate: "></asp:Label>
-			<asp:FileUpload ID="FileUpload1" runat="server" />
-			<br />
+    <form id="form1" runat="server">
+        <div>
+            <asp:Label ID="lblError" runat="server" ForeColor="Red" Visible="false"></asp:Label>
+        </div>
+        <div>
+            <asp:Label ID="lblinputFile" runat="server" Text="Select a jpg, png, or bmp file to manipulate: "></asp:Label>
+            <asp:FileUpload ID="FileUpload1" runat="server" />
+            <br />
 
-			<div>
-				<asp:Button ID="btnInvert" runat="server" Text="Invert" OnClick="btnInvert_Click" Visible="false" />
-			</div>
+            <div>
+                <asp:Button ID="btnInvert" runat="server" Text="Invert" OnClick="btnInvert_Click" Visible="false" />
+            </div>
 
-			<br />
+            <br />
 
-			<div>
-				<asp:Label ID="Label4" runat="server" Text="How would you like to filter the image?"></asp:Label>
-				<asp:DropDownList ID="ddlFilter" runat="server">
-					<asp:ListItem Value="R">R</asp:ListItem>
-					<asp:ListItem Value="G">G</asp:ListItem>
-					<asp:ListItem Value="G">G</asp:ListItem>
-				</asp:DropDownList>
-				<asp:Button ID="btnFilter" runat="server" Text="Filter" OnClick="btnFilter_Click" />
-			</div>
-			<br />
+            <div>
+                <asp:Label ID="Label4" runat="server" Text="How would you like to filter the image?"></asp:Label>
+                <asp:DropDownList ID="ddlFilter" runat="server">
+                    <asp:ListItem Value="R">R</asp:ListItem>
+                    <asp:ListItem Value="G">G</asp:ListItem>
+                    <asp:ListItem Value="B">B</asp:ListItem>
+                </asp:DropDownList>
+                <asp:Button ID="btnFilter" runat="server" Text="Filter" OnClick="btnFilter_Click" />
+            </div>
+            <br />
 
-			<div>
-				<%--Rotate--%>
-				<asp:Label ID="Label1" runat="server" Text="How many times would you like to rotate the image?"></asp:Label>
-				<asp:TextBox ID="txtRotateTimes" runat="server" TextMode="Number"></asp:TextBox>
-				<br />
-				<asp:Label ID="Label2" runat="server" Text="Which direction would you like to rotate the image?"></asp:Label>
-				<asp:RadioButtonList ID="radbtnRotateDirection" runat="server">
-					<asp:ListItem Value="false">Clockwise</asp:ListItem>
-					<asp:ListItem Value="true">Counter-Clockwise</asp:ListItem>
-				</asp:RadioButtonList>
-				<asp:Button ID="btnRotate" runat="server" Text="Rotate" OnClick="btnRotate_Click" />
-			</div>
+            <div>
+                <%--Rotate--%>
+                <asp:Label ID="Label1" runat="server" Text="How many times would you like to rotate the image?"></asp:Label>
+                <asp:TextBox ID="txtRotateTimes" runat="server" TextMode="Number"></asp:TextBox>
+                <br />
+                <asp:Label ID="Label2" runat="server" Text="Which direction would you like to rotate the image?"></asp:Label>
+                <asp:RadioButtonList ID="radbtnRotateDirection" runat="server">
+                    <asp:ListItem Value="false">Clockwise</asp:ListItem>
+                    <asp:ListItem Value="true">Counter-Clockwise</asp:ListItem>
+                </asp:RadioButtonList>
+                <asp:Button ID="btnRotate" runat="server" Text="Rotate" OnClick="btnRotate_Click" />
+            </div>
 
-			<br />
-			<br />
+            <br />
+            <br />
 
-			<div>
-				<%--Flip--%>
-				<asp:Label ID="Label3" runat="server" Text="Which orientation would you like to flip the image?"></asp:Label>
-				<asp:RadioButtonList ID="radbtnFlip" runat="server">
-					<asp:ListItem Value="true">Vertical</asp:ListItem>
-					<asp:ListItem Value="false">Horizontal</asp:ListItem>
-				</asp:RadioButtonList>
-				<asp:Button ID="btnFlip" runat="server" Text="Flip" OnClick="btnFlip_Click" />
-			</div>
+            <div>
+                <%--Flip--%>
+                <asp:Label ID="Label3" runat="server" Text="Which orientation would you like to flip the image?"></asp:Label>
+                <asp:RadioButtonList ID="radbtnFlip" runat="server">
+                    <asp:ListItem Value="true">Vertical</asp:ListItem>
+                    <asp:ListItem Value="false">Horizontal</asp:ListItem>
+                </asp:RadioButtonList>
+                <asp:Button ID="btnFlip" runat="server" Text="Flip" OnClick="btnFlip_Click" />
+            </div>
 
+            <div>
+                <asp:Label ID="Label5" runat="server" Text="Click Negate if you would like to negate the image: "></asp:Label>
+                <asp:Button ID="btnNegate" runat="server" Text="Negate" OnClick="btnNegate_Click" />
+            </div>
 
-		</div>
-	</form>
+            <div>
+                <asp:Label ID="Label6" runat="server" Text="Click Grayscale if you would like to grayscale the image: "></asp:Label>
+                <asp:Button ID="btnGrayscale" runat="server" Text="Grayscale" OnClick="btnGrayscale_Click" />
+            </div>
+        </div>
+    </form>
 </body>
 </html>

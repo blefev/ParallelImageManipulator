@@ -48,7 +48,7 @@ namespace PIMWebsite
             return bitmap;
         }
 
-        public void Grayscale()
+        public static void Grayscale()
         {
             Parallel.For(0, Width, i =>
             {
@@ -132,6 +132,30 @@ namespace PIMWebsite
                     });
                 }
             }
+        }
+
+        public static void Negate()
+        {
+            Parallel.For(0, Width, i =>
+            {
+                for (int j = 0; j < Height; j++)
+                {
+
+                    Color px = pixels[i, j];
+
+                    int a = px.A;
+                    int r = px.R;
+                    int g = px.G;
+                    int b = px.B;
+
+                    r = 255 - r;
+                    g = 255 - g;
+                    b = 255 - b;
+
+                    pixels[i, j] = Color.FromArgb(a, r, g, b);
+
+                }
+            });
         }
 
         public static void Filter(string color)
