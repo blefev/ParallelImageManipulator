@@ -78,7 +78,7 @@ namespace WebServer
                 {
                     dynamic requestJson = GetRequestJson(request);
 
-                    if (!requestJson.image)
+                    if (requestJson.image == null)
                     {
                         return @"{
                             'error': 'No image provided'
@@ -86,8 +86,8 @@ namespace WebServer
                     }
 
 
-                    Bitmap bmp = BitmapFromBase64(requestJson.img);
-                    string filter = requestJson.filter.ToLower();
+                    Bitmap bmp = BitmapFromBase64((string)requestJson["image"]);
+                    string filter = ((string)requestJson["filter"]).ToLower();
 
                     ImageManipulator im = new ImageManipulator(bmp);
 
@@ -125,9 +125,12 @@ namespace WebServer
             }
             catch (Exception e)
             {
+                
                 return @"{
-                    'error': """ + System.Web.HttpUtility.JavaScriptStringEncode(e.Message) + @"""
-                }";
+                    'error': ""Exception: " + System.Web.HttpUtility.JavaScriptStringEncode(e.Message) + @""",
+                    'stacktrace': """ + e.StackTrace + @"""
+            }
+            ";
             }
         }
 
