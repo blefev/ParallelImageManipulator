@@ -10,11 +10,11 @@ namespace ParallelImageManipulator
         {
             string path = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
 
-            Bitmap img = new Bitmap($"{path}\\Resources\\rgb.bmp");
+            Bitmap img = new Bitmap($"{path}\\Resources\\fractal.bmp");
             ImageManipulator im = new ImageManipulator(img);
             im.Rotate(90, true);
             Bitmap ret = im.ToBitmap();
-            ret.Save($"{path}\\Output\\output.bmp");
+            ret.Save($"{path}\\Output\\output.jpg");
         }
 
         private Bitmap ConvertToBMP(Bitmap img)

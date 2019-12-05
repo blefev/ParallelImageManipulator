@@ -67,21 +67,21 @@ namespace ParallelImageManipulator
         {
             if (vertical)
             {
-                Parallel.For(0, Width / 2, i =>
+                Parallel.For(0, Height / 2, i =>
                 {
-                    for (int j = 0; j < Height; j++)
+                    for (int j = 0; j < Width; j++)
                     {
                         Color temp = pixels[i, j];
-                        pixels[i, j] = pixels[Height - i - 1, j];
-                        pixels[Height - i - 1, j] = temp;
+                        pixels[i, j] = pixels[Width - i - 1, j];
+                        pixels[Width - i - 1, j] = temp;
                     }
                 });
             }
             else
             {
-                Parallel.For(0, Height, i =>
+                Parallel.For(0, Width, i =>
                 {
-                    for (int j = 0; j < Width / 2; j++)
+                    for (int j = 0; j < Height / 2; j++)
                     {
                         Color temp = pixels[i, j];
                         pixels[i, j] = pixels[i, Height - j - 1];
@@ -99,15 +99,15 @@ namespace ParallelImageManipulator
             {
                 for (int x = 0; x < times; x += 90)
                 {
-                    Parallel.For(0, Height, i =>
+                    Parallel.For(0, Width, i =>
                     {
-                        for (int j = i; j < Width - i - 1; j++)
+                        for (int j = i; j < Height - i - 1; j++)
                         {
                             Color temp = pixels[i, j];
-                            pixels[i, j] = pixels[Width - 1 - j, i];
-                            pixels[Width - 1 - j, i] = pixels[Width - 1 - i, Width - 1 - j];
-                            pixels[Width - 1 - i, Width - 1 - j] = pixels[j, Width - 1 - i];
-                            pixels[j, Width - 1 - i] = temp;
+                            pixels[i, j] = pixels[Height - 1 - j, i];
+                            pixels[Height - 1 - j, i] = pixels[Height - 1 - i, Height - 1 - j];
+                            pixels[Height - 1 - i, Height - 1 - j] = pixels[j, Height - 1 - i];
+                            pixels[j, Height - 1 - i] = temp;
                         }
                     });
                 }
@@ -117,15 +117,15 @@ namespace ParallelImageManipulator
             {
                 for (int x = 0; x < times; x += 90)
                 {
-                    Parallel.For(0, Height, i =>
+                    Parallel.For(0, Width, i =>
                     {
-                        for (int j = i; j < Width - i - 1; j++)
+                        for (int j = i; j < Height - i - 1; j++)
                         {
                             Color temp = pixels[i, j];
-                            pixels[i, j] = pixels[j, Width - 1 - i];
-                            pixels[j, Width - 1 - i] = pixels[Width - 1 - i, Width - 1 - j];
-                            pixels[Width - 1 - i, Width - 1 - j] = pixels[Width - 1 - j, i];
-                            pixels[Width - 1 - j, i] = temp;
+                            pixels[i, j] = pixels[j, Height - 1 - i];
+                            pixels[j, Height - 1 - i] = pixels[Height - 1 - i, Height - 1 - j];
+                            pixels[Height - 1 - i, Height - 1 - j] = pixels[Height - 1 - j, i];
+                            pixels[Height - 1 - j, i] = temp;
                         }
                     });
                 }
