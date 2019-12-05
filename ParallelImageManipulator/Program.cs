@@ -10,9 +10,9 @@ namespace ParallelImageManipulator
         {
             string path = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
 
-            Bitmap img = new Bitmap($"{path}\\Resources\\fractal.bmp");
+            Bitmap img = new Bitmap($"{path}\\Resources\\face.jpg");
             ImageManipulator im = new ImageManipulator(img);
-            im.Rotate(90, true);
+            im.Flip(true);
             Bitmap ret = im.ToBitmap();
             ret.Save($"{path}\\Output\\output.jpg");
         }

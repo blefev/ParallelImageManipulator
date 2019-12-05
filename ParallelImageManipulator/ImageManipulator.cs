@@ -8,13 +8,13 @@ namespace ParallelImageManipulator
     class ImageManipulator
     {
         private Color[,] pixels;
-        private int Width;
         private int Height;
+        private int Width;
 
         public ImageManipulator(Bitmap startImage)
         {
-            Width = startImage.Width;
             Height = startImage.Height;
+            Width = startImage.Width;
             pixels = ImageToBytes(startImage);
         }
 
@@ -22,11 +22,11 @@ namespace ParallelImageManipulator
         {
             Color[,] matrix = new Color[Height, Width];
 
-            for (int y = 0; y < img.Height; y++)
+            for (int i = 0; i < img.Height; i++)
             {
-                for (int x = 0; x < img.Width; x++)
+                for (int j = 0; j < img.Width; j++)
                 {
-                    matrix[y, x] = img.GetPixel(x, y);
+                    matrix[i, j] = img.GetPixel(i, j);
                 }
             }
             return matrix;
@@ -34,11 +34,11 @@ namespace ParallelImageManipulator
 
         public Bitmap ToBitmap()
         {
-            Bitmap bitmap = new Bitmap(Height, Width);
+            Bitmap bitmap = new Bitmap(Width, Height);
 
-            for (int i = 0; i < Height; i++)
+            for (int i = 0; i < Width; i++)
             {
-                for (int j = 0; j < Width; j++)
+                for (int j = 0; j < Height; j++)
                 {
                     bitmap.SetPixel(i, j, pixels[i, j]);
                 }
@@ -48,9 +48,9 @@ namespace ParallelImageManipulator
 
         public void Grayscale()
         {
-            Parallel.For(0, Height, i =>
+            Parallel.For(0, Width, i =>
             {
-                for (int j = 0; j < Width; j++)
+                for (int j = 0; j < Height; j++)
                 {
                     Color px = pixels[i, j];
                     // create a new pixel from the grayvals substituted for RGB vals
@@ -84,8 +84,8 @@ namespace ParallelImageManipulator
                     for (int j = 0; j < Height / 2; j++)
                     {
                         Color temp = pixels[i, j];
-                        pixels[i, j] = pixels[i, Height - j - 1];
-                        pixels[i, Height - j - 1] = temp;
+                        pixels[i, j] = pixels[i, Width - j - 1];
+                        pixels[i, Width - j - 1] = temp;
                     }
                 });
             }
@@ -140,9 +140,9 @@ namespace ParallelImageManipulator
                 throw new Exception("Invalid color filter specified in ImageManipulator.Filter()");
             }
 
-            Parallel.For(0, Height, i =>
+            Parallel.For(0, Width, i =>
             {
-                for (int j = 0; j < Width; j++)
+                for (int j = 0; j < Height; j++)
                 {
                     byte newR = 0, newG = 0, newB = 0;
                     Color px = pixels[i, j];
