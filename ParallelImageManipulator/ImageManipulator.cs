@@ -20,13 +20,13 @@ namespace ParallelImageManipulator
 
         private Color[,] ImageToBytes(Bitmap img)
         {
-            Color[,] matrix = new Color[Height, Width];
+            Color[,] matrix = new Color[Width, Height];
 
-            for (int i = 0; i < img.Height; i++)
+            for (int x = 0; x < img.Width; x++)
             {
-                for (int j = 0; j < img.Width; j++)
+                for (int y = 0; y < img.Height; y++)
                 {
-                    matrix[i, j] = img.GetPixel(i, j);
+                    matrix[x, y] = img.GetPixel(x, y);
                 }
             }
             return matrix;
