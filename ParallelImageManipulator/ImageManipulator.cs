@@ -48,15 +48,15 @@ namespace ParallelImageManipulator
 
         public void Grayscale()
         {
-            Parallel.For(0, Width, i =>
+            Parallel.For(0, Width, x =>
             {
-                for (int j = 0; j < Height; j++)
+                for (int y = 0; y < Height; y++)
                 {
-                    Color px = pixels[i, j];
+                    Color px = pixels[x, y];
                     // create a new pixel from the grayvals substituted for RGB vals
                     byte grayVal = (byte)((px.R + px.G + px.B) / 3);
                     // set the new pixel
-                    pixels[i, j] = Color.FromArgb(px.A, grayVal, grayVal, grayVal);
+                    pixels[x, y] = Color.FromArgb(px.A, grayVal, grayVal, grayVal);
 
                 }
             });
