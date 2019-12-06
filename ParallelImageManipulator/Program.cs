@@ -12,7 +12,7 @@ namespace ParallelImageManipulator
 
             Bitmap img = new Bitmap($"{path}\\Resources\\face.jpg");
             ImageManipulator im = new ImageManipulator(img);
-            im.Flip(true);
+            im.Rotate(1, true);
             Bitmap ret = im.ToBitmap();
             ret.Save($"{path}\\Output\\output.jpg");
         }

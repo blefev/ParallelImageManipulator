@@ -92,10 +92,10 @@ namespace ParallelImageManipulator
         }
 
         // False if 90-factor clockwise (right), True if 90-factor counter-clockwise (left)
-        public void Rotate(int times, bool direction)
+        public void Rotate(int times, bool clockwise = true)
         {
             // Rotate clockwise
-            if (direction)
+            if (clockwise)
             {
                 for (int x = 0; x < times; x += 90)
                 {
