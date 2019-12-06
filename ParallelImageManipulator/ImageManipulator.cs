@@ -34,13 +34,13 @@ namespace ParallelImageManipulator
 
         public Bitmap ToBitmap()
         {
-            Bitmap bitmap = new Bitmap(Width, Height);
+            Bitmap bitmap = new Bitmap(Height, Width);
 
-            for (int i = 0; i < Width; i++)
+            for (int x = 0; x < Width; x++)
             {
-                for (int j = 0; j < Height; j++)
+                for (int y = 0; y < Height; y++)
                 {
-                    bitmap.SetPixel(i, j, pixels[i, j]);
+                    bitmap.SetPixel(x, y, pixels[x, y]);
                 }
             }
             return bitmap;
