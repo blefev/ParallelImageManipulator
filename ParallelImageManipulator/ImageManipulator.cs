@@ -34,7 +34,7 @@ namespace ParallelImageManipulator
 
         public Bitmap ToBitmap()
         {
-            Bitmap bitmap = new Bitmap(Height, Width);
+            Bitmap bitmap = new Bitmap(Width, Height);
 
             for (int x = 0; x < Width; x++)
             {
@@ -67,25 +67,25 @@ namespace ParallelImageManipulator
         {
             if (vertical)
             {
-                Parallel.For(0, Height / 2, i =>
+                Parallel.For(0, Width, x =>
                 {
-                    for (int j = 0; j < Width; j++)
+                    for (int y = 0; y < Height / 2; y++)
                     {
-                        Color temp = pixels[i, j];
-                        pixels[i, j] = pixels[Width - i - 1, j];
-                        pixels[Width - i - 1, j] = temp;
+                        Color temp = pixels[x, y];
+                        pixels[x, y] = pixels[x, Height - y - 1];
+                        pixels[x, Height - y - 1] = temp;
                     }
                 });
             }
             else
             {
-                Parallel.For(0, Width, i =>
+                Parallel.For(0, Width / 2, x =>
                 {
-                    for (int j = 0; j < Height / 2; j++)
+                    for (int y = 0; y < Height; y++)
                     {
-                        Color temp = pixels[i, j];
-                        pixels[i, j] = pixels[i, Width - j - 1];
-                        pixels[i, Width - j - 1] = temp;
+                        Color temp = pixels[x, y];
+                        pixels[x, y] = pixels[Width - x - 1, y];
+                        pixels[Width - x - 1, y] = temp;
                     }
                 });
             }
