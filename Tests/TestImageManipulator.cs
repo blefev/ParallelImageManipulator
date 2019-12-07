@@ -10,14 +10,33 @@
  */
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Drawing;
+using System.IO;
 
 namespace Tests
 {
+    
     [TestClass]
-    public class UnitTest1
+    public class TestImageManipulator
     {
+        private static string BaseDir = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
 
+        // Requires ImageMagick installed on your machine: https://imagemagick.org/script/download.php
+        private void RunImageMagick(string command)
+        {
 
+        }
+
+        private bool BmpsAreEqual(Bitmap bmp1, Bitmap bmp2)
+        {
+            return false;
+        }
+
+        private Bitmap ReadTestBitmap(string name)
+        {
+            Bitmap bmp = new Bitmap($"{BaseDir}\\Resources\\${name}");
+            return bmp;
+        }
 
         [TestMethod]
         public void ImageToBytes()
