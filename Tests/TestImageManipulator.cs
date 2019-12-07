@@ -203,9 +203,9 @@ namespace Tests
                 MagickImage mi = new MagickImage(bmp);
 
                 im.Negate();
-                mi.Negate();
+                Bitmap answer = new Bitmap($"{BaseDir}\\Resources\\Answers\\Negate" + entry.Key);
 
-                bool passed = BmpsAreEqual(im.ToBitmap(), mi.ToBitmap());
+                bool passed = BmpsAreEqual(im.ToBitmap(), answer);
 
                 if (!passed)
                 {
