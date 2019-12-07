@@ -127,7 +127,46 @@ namespace ParallelImageManipulator
                 }
             }
         }
-        
+
+        public void Brightness(int brightness)
+        {
+            Parallel.For(0, Width, x =>
+            {
+                for (int y = 0; y < Height; y++)
+                {
+
+                    Color px = pixels[x, y];
+
+                    int a = px.A;
+                    int r = px.R;
+                    int g = px.G;
+                    int b = px.B;
+
+                    r = Truncate(r + brightness);
+                    g = Truncate(g + brightness);
+                    b = Truncate(b + brightness);
+
+                    pixels[x, y] = Color.FromArgb(a, r, g, b);
+
+                }
+            });
+        }
+
+        // For Brightness()
+        void Truncate(int value)
+        {
+            if (value < 0)
+            {
+                value = 0;
+            }
+
+            if (value > 255)
+            {
+                value = 255;
+            }
+            return value;
+        }
+
         public void Negate()
         {
             Parallel.For(0, Width, x =>
