@@ -12,6 +12,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
 using System.IO;
+using ImageMagick;
 
 namespace Tests
 {
@@ -20,15 +21,19 @@ namespace Tests
     public class TestImageManipulator
     {
         private static string BaseDir = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
+        //Bitmap Square = 
 
         // Requires ImageMagick installed on your machine: https://imagemagick.org/script/download.php
-        private void RunImageMagick(string command)
+        private Bitmap RunImageMagick(bitmap bmp, string command)
         {
+            MagickImage img = new MagickImage(bmp);
+
 
         }
 
         private bool BmpsAreEqual(Bitmap bmp1, Bitmap bmp2)
         {
+            
             return false;
         }
 
