@@ -33,11 +33,11 @@ namespace Tests
                         RectangleJpg = Properties.Resources.RectangleJpg;
 
         private Dictionary<String, Bitmap> AllImages = new Dictionary<String, Bitmap>(){
-                                                            { "SquarePng" , SquarePng},
-                                                            { "SquareBmp", SquareBmp },
+                                                            { "SquarePng.png" , SquarePng},
+                                                            { "SquareBmp.bmp", SquareBmp },
                                                            // {"SquareJpg" , SquareJpg},
-                                                            {"RectangleBmp" , RectangleBmp},
-                                                            {"RectanglePng" , RectanglePng} };
+                                                            {"RectangleBmp.bmp" , RectangleBmp},
+                                                            {"RectanglePng.png" , RectanglePng} };
                                                           // {"RectangleJpg" , RectangleJpg }};
 
 
@@ -96,13 +96,13 @@ namespace Tests
                 MagickImage mi = new MagickImage(bmp);
 
                 im.Grayscale();
-                Bitmap answer = new Bitmap($"{BaseDir}\\Resources\\Answers\\FlipSquareVertical_" + entry.Key + ".png");
+                Bitmap answer = new Bitmap($"{BaseDir}\\Resources\\Answers\\Grayscale_" + entry.Key);
 
                 bool passed = BmpsAreEqual(im.ToBitmap(), answer);
 
                 if (!passed)
                 {
-                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical_" + entry.Key + ".png");
+                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\Grayscale" + entry.Key);
                 }
 
                 Assert.IsTrue(passed, $"{entry.Key} failed");
@@ -125,8 +125,8 @@ namespace Tests
                 bool passed = BmpsAreEqual(im.ToBitmap(), mi.ToBitmap());
 
                 if (!passed) {
-                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.png");
-                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.png");
+                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipVertical" + entry.Key + " ImageManipulator.png");
+                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipVertical" + entry.Key + " MagickImage.png");
                 }
 
                 Assert.IsTrue(passed, $"{entry.Key} failed");
@@ -150,8 +150,8 @@ namespace Tests
 
                 if (!passed)
                 {
-                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.png");
-                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.png");
+                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipHorizontal" + entry.Key + " ImageManipulator.png");
+                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipHorizontal" + entry.Key + " MagickImage.png");
                 }
 
                 Assert.IsTrue(passed, $"{entry.Key} failed");
@@ -182,8 +182,8 @@ namespace Tests
 
                         if (!passed)
                         {
-                            im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.png");
-                            mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.png");
+                            im.ToBitmap().Save($"{BaseDir}\\TestOutput\\Rotate" + entry.Key + " ImageManipulator.png");
+                            mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\Rotate" + entry.Key + " MagickImage.png");
                         }
 
                         Assert.IsTrue(passed, $"{entry.Key} failed rotation at {degrees} degrees");
@@ -209,8 +209,8 @@ namespace Tests
 
                 if (!passed)
                 {
-                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.png");
-                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.png");
+                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\Negate" + entry.Key + " ImageManipulator.png");
+                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\Negate" + entry.Key + " MagickImage.png");
                 }
 
                 Assert.IsTrue(passed, $"{entry.Key} failed");
@@ -236,8 +236,8 @@ namespace Tests
 
                     if (!passed)
                     {
-                        im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.png");
-                        mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.png");
+                        im.ToBitmap().Save($"{BaseDir}\\TestOutput\\Filter" + entry.Key + " ImageManipulator.png");
+                        mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\Filter" + entry.Key + " MagickImage.png");
                     }
 
                     Assert.IsTrue(passed, $"{entry.Key} failed");
