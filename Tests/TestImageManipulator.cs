@@ -14,6 +14,8 @@ using System.Drawing;
 using System.IO;
 using ImageMagick;
 using System.Drawing.Imaging;
+using ParallelImageManipulator;
+using System.Collections.Generic;
 
 namespace Tests
 {
@@ -22,12 +24,19 @@ namespace Tests
     public class TestImageManipulator
     {
         private static string BaseDir = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
-        private Bitmap  SquareBmp    = Properties.Resources.SquareBmp,
+        private static Bitmap  SquareBmp    = Properties.Resources.SquareBmp,
                         SquarePng    = Properties.Resources.SquarePng,
                         SquareJpg    = Properties.Resources.SquareJpg,
                         RectangleBmp = Properties.Resources.RectangleBmp,
                         RectanglePng = Properties.Resources.RectanglePng,
                         RectangleJpg = Properties.Resources.RectangleJpg;
+
+        private List<Bitmap> AllImages = new List<Bitmap>(){ SquarePng,
+                                                             SquareJpg,
+                                                             RectangleBmp,
+                                                             RectanglePng,
+                                                             RectangleJpg };
+
 
         // Requires ImageMagick installed on your machine: https://imagemagick.org/script/download.php
         private Bitmap RunImageMagick(Bitmap bmp, string command)
@@ -69,7 +78,8 @@ namespace Tests
         [TestMethod]
         public void BmpsAreEqualWorks()
         {
-            Assert.IsTrue(BmpsAreEqual(SquareBmp, SquareBmp));
+            Assert.IsTrue(BmpsAreEqual(SquareBmp, SquareBmp), "Equal are equal");
+            Assert.IsFalse(BmpsAreEqual(SquareBmp, RectangleBmp), "Unequal are unequal");
         }
 
         [TestMethod]
@@ -81,7 +91,13 @@ namespace Tests
         [TestMethod]
         public void ToBitmap()
         {
+            foreach (Bitmap bmp in AllImages)
+            {
+                ImageManipulator im = new ImageManipulator(bmp);
 
+                Assert.IsTrue(BmpsAreEqual(im.ToBitmap(), bmp));
+            }
+            
         }
 
         [TestMethod]
