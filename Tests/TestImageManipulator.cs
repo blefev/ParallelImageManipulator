@@ -41,15 +41,6 @@ namespace Tests
                                                           // {"RectangleJpg" , RectangleJpg }};
 
 
-        // Requires ImageMagick installed on your machine: https://imagemagick.org/script/download.php
-        private Bitmap RunImageMagick(Bitmap bmp, string command)
-        {
-            MagickImage img = new MagickImage(bmp);
-
-            Bitmap returnImg = img.ToBitmap();
-            return returnImg;
-        }
-
         // Code modified from
         // https://codereview.stackexchange.com/questions/39980/determining-if-2-images-are-the-same
         private bool BmpsAreEqual(Bitmap bmp1, Bitmap bmp2)
@@ -72,11 +63,6 @@ namespace Tests
         }
 
         
-        private Bitmap ReadTestBitmap(string name)
-        {
-            Bitmap bmp = new Bitmap($"{BaseDir}\\Resources\\${name}");
-            return bmp;
-        }
 
         [TestMethod]
         public void BmpsAreEqualWorks()
@@ -85,11 +71,6 @@ namespace Tests
             Assert.IsFalse(BmpsAreEqual(SquareBmp, RectangleBmp), "Unequal are unequal");
         }
 
-        [TestMethod]
-        public void ImageToBytes()
-        {
-
-        }
 
         [TestMethod]
         public void ToBitmap()
@@ -104,9 +85,28 @@ namespace Tests
             
         }
 
-        private void TestAllImagesWithDelegate(Delegate transformer)
+        [TestMethod]
+        public void Grayscale()
         {
+            foreach (KeyValuePair<string, Bitmap> entry in AllImages)
+            {
+                Bitmap bmp = entry.Value;
 
+                ImageManipulator im = new ImageManipulator(bmp);
+                MagickImage mi = new MagickImage(bmp);
+
+                im.Grayscale();
+                Bitmap answer = new Bitmap($"{BaseDir}\\Resources\\Answers\\FlipSquareVertical_" + entry.Key + ".png");
+
+                bool passed = BmpsAreEqual(im.ToBitmap(), answer);
+
+                if (!passed)
+                {
+                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical_" + entry.Key + ".png");
+                }
+
+                Assert.IsTrue(passed, $"{entry.Key} failed");
+            }
         }
 
         [TestMethod]
@@ -125,8 +125,8 @@ namespace Tests
                 bool passed = BmpsAreEqual(im.ToBitmap(), mi.ToBitmap());
 
                 if (!passed) {
-                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.jpg");
-                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.jpg");
+                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.png");
+                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.png");
                 }
 
                 Assert.IsTrue(passed, $"{entry.Key} failed");
@@ -150,8 +150,8 @@ namespace Tests
 
                 if (!passed)
                 {
-                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.jpg");
-                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.jpg");
+                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.png");
+                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.png");
                 }
 
                 Assert.IsTrue(passed, $"{entry.Key} failed");
@@ -159,7 +159,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void RotateClockWise()
+        public void Rotate()
         {
             foreach (KeyValuePair<string, Bitmap> entry in AllImages)
             {
@@ -182,8 +182,8 @@ namespace Tests
 
                         if (!passed)
                         {
-                            im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.jpg");
-                            mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.jpg");
+                            im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.png");
+                            mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.png");
                         }
 
                         Assert.IsTrue(passed, $"{entry.Key} failed rotation at {degrees} degrees");
@@ -193,33 +193,56 @@ namespace Tests
         }
 
         [TestMethod]
-        public void RotateCounterClockwise()
-        {
-
-        }
-
-        [TestMethod]
         public void Negate()
         {
+            foreach (KeyValuePair<string, Bitmap> entry in AllImages)
+            {
+                Bitmap bmp = entry.Value;
 
+                ImageManipulator im = new ImageManipulator(bmp);
+                MagickImage mi = new MagickImage(bmp);
+
+                im.Negate();
+                mi.Negate();
+
+                bool passed = BmpsAreEqual(im.ToBitmap(), mi.ToBitmap());
+
+                if (!passed)
+                {
+                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.png");
+                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.png");
+                }
+
+                Assert.IsTrue(passed, $"{entry.Key} failed");
+            }
         }
 
         [TestMethod]
-        public void FilterRed()
+        public void Filter()
         {
+            foreach (string color in new string[] { "R", "G", "B" })
+            {
+                foreach (KeyValuePair<string, Bitmap> entry in AllImages)
+                {
+                    Bitmap bmp = entry.Value;
 
-        }
+                    ImageManipulator im = new ImageManipulator(bmp);
+                    MagickImage mi = new MagickImage(bmp);
 
-        [TestMethod]
-        public void FilterBlue()
-        {
+                    im.Filter(color);
+                    //mi.Filter
 
-        }
+                    bool passed = BmpsAreEqual(im.ToBitmap(), mi.ToBitmap());
 
-        [TestMethod]
-        public void FilterGreen()
-        {
+                    if (!passed)
+                    {
+                        im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.png");
+                        mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.png");
+                    }
 
+                    Assert.IsTrue(passed, $"{entry.Key} failed");
+                }
+            }
         }
     }
 }

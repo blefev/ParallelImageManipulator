@@ -63,6 +63,46 @@ namespace Tests.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap FlipSquareVertical_RectangleBmp {
+            get {
+                object obj = ResourceManager.GetObject("FlipSquareVertical_RectangleBmp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FlipSquareVertical_RectanglePng {
+            get {
+                object obj = ResourceManager.GetObject("FlipSquareVertical_RectanglePng", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FlipSquareVertical_SquareBmp {
+            get {
+                object obj = ResourceManager.GetObject("FlipSquareVertical_SquareBmp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FlipSquareVertical_SquarePng {
+            get {
+                object obj = ResourceManager.GetObject("FlipSquareVertical_SquarePng", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap RectangleBmp {
             get {
                 object obj = ResourceManager.GetObject("RectangleBmp", resourceCulture);

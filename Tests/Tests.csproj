@@ -97,6 +97,18 @@
   <ItemGroup>
     <None Include="Resources\Square.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Answers\FlipSquareVertical_RectangleBmp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Answers\FlipSquareVertical_RectanglePng.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Answers\FlipSquareVertical_SquareBmp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Answers\FlipSquareVertical_SquarePng.png" />
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

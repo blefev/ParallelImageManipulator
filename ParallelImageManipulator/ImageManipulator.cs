@@ -46,6 +46,7 @@ namespace ParallelImageManipulator
             return bitmap;
         }
 
+        // Rec. 709 grayscaale
         public void Grayscale()
         {
             Parallel.For(0, Width, x =>
@@ -54,7 +55,7 @@ namespace ParallelImageManipulator
                 {
                     Color px = pixels[x, y];
                     // create a new pixel from the grayvals substituted for RGB vals
-                    byte grayVal = (byte)((px.R + px.G + px.B) / 3);
+                    byte grayVal = (byte)(0.2126 * px.R + 0.7152 * px.G + 0.0722 * px.B);
                     // set the new pixel
                     pixels[x, y] = Color.FromArgb(px.A, grayVal, grayVal, grayVal);
 
