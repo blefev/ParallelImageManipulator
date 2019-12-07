@@ -21,14 +21,19 @@ namespace Tests
     public class TestImageManipulator
     {
         private static string BaseDir = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
-        //Bitmap Square = 
+        private Bitmap  SquareBmp    = Properties.Resources.SquareBmp,
+                        SquarePng    = Properties.Resources.SquarePng,
+                        SquareJpg    = Properties.Resources.SquareJpg,
+                        RectangleBmp = Properties.Resources.RectangleBmp,
+                        RectanglePng = Properties.Resources.RectanglePng,
+                        RectangleJpg = Properties.Resources.RectangleJpg;
 
         // Requires ImageMagick installed on your machine: https://imagemagick.org/script/download.php
         private Bitmap RunImageMagick(bitmap bmp, string command)
         {
             MagickImage img = new MagickImage(bmp);
-
-
+            
+            return img;
         }
 
         private bool BmpsAreEqual(Bitmap bmp1, Bitmap bmp2)
