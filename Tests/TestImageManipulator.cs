@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
 using System.IO;
 using ImageMagick;
+using System.Drawing.Imaging;
 
 namespace Tests
 {
@@ -29,23 +30,46 @@ namespace Tests
                         RectangleJpg = Properties.Resources.RectangleJpg;
 
         // Requires ImageMagick installed on your machine: https://imagemagick.org/script/download.php
-        private Bitmap RunImageMagick(bitmap bmp, string command)
+        private Bitmap RunImageMagick(Bitmap bmp, string command)
         {
             MagickImage img = new MagickImage(bmp);
-            
-            return img;
+
+            Bitmap returnImg = img.ToBitmap();
+            return returnImg;
         }
 
+        // Code modified from
+        // https://codereview.stackexchange.com/questions/39980/determining-if-2-images-are-the-same
         private bool BmpsAreEqual(Bitmap bmp1, Bitmap bmp2)
         {
-            
-            return false;
+            if (!bmp1.Size.Equals(bmp2.Size))
+            {
+                return false;
+            }
+            for (int x = 0; x < bmp1.Width; ++x)
+            {
+                for (int y = 0; y < bmp1.Height; ++y)
+                {
+                    if (bmp1.GetPixel(x, y) != bmp2.GetPixel(x, y))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
+        
         private Bitmap ReadTestBitmap(string name)
         {
             Bitmap bmp = new Bitmap($"{BaseDir}\\Resources\\${name}");
             return bmp;
+        }
+
+        [TestMethod]
+        public void BmpsAreEqualWorks()
+        {
+            Assert.IsTrue(BmpsAreEqual(SquareBmp, SquareBmp));
         }
 
         [TestMethod]
