@@ -9,10 +9,11 @@ namespace ParallelImageManipulator
     {
         static void Main(string[] args)
         {
-            
+            SetParallelismToCoreCount();
 
             string path = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
 
+            /* TODO: use commandline arguments */
             Bitmap img = new Bitmap($"{path}\\Resources\\face.jpg");
             ImageManipulator im = new ImageManipulator(img);
             im.Rotate(1, true);
@@ -23,14 +24,7 @@ namespace ParallelImageManipulator
             ret.Save($"{path}\\Output\\output.jpg");
         }
 
-        private Bitmap ConvertToBMP(Bitmap img)
-        {
-            img.Save("input.bmp", ImageFormat.Bmp);
-
-            return img;
-        }
-
-        private void SetParallelismToCoreCount()
+        static private void SetParallelismToCoreCount()
         {
             ParallelOptions options = new ParallelOptions();
             options.MaxDegreeOfParallelism = System.Environment.ProcessorCount;

@@ -17,10 +17,13 @@ using System.Drawing.Imaging;
 using ParallelImageManipulator;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Tests
 {
-    
+
+
     [TestClass]
     public class TestImageManipulator
     {
@@ -35,10 +38,8 @@ namespace Tests
         private Dictionary<String, Bitmap> AllImages = new Dictionary<String, Bitmap>(){
                                                             { "SquarePng.png" , SquarePng},
                                                             { "SquareBmp.bmp", SquareBmp },
-                                                           // {"SquareJpg" , SquareJpg},
                                                             {"RectangleBmp.bmp" , RectangleBmp},
                                                             {"RectanglePng.png" , RectanglePng} };
-                                                          // {"RectangleJpg" , RectangleJpg }};
 
 
         // Code modified from

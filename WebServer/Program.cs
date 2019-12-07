@@ -15,7 +15,7 @@ namespace WebServer
             SetParallelismToCoreCount();
             WebServer ws = new WebServer();
             Console.WriteLine("Starting server...");
-            ws.Start();
+            ws.Start(); 
         }
 
         static private void SetParallelismToCoreCount()
@@ -24,6 +24,4 @@ namespace WebServer
             options.MaxDegreeOfParallelism = System.Environment.ProcessorCount;
         }
     }
-
-
 }
