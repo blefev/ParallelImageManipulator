@@ -125,8 +125,8 @@ namespace Tests
                 bool passed = BmpsAreEqual(im.ToBitmap(), mi.ToBitmap());
 
                 if (!passed) {
-                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + "im.jpg");
-                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + "mi.jpg");
+                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.jpg");
+                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.jpg");
                 }
 
                 Assert.IsTrue(passed, $"{entry.Key} failed");
@@ -150,8 +150,8 @@ namespace Tests
 
                 if (!passed)
                 {
-                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + "im.jpg");
-                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + "mi.jpg");
+                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.jpg");
+                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.jpg");
                 }
 
                 Assert.IsTrue(passed, $"{entry.Key} failed");
@@ -159,25 +159,41 @@ namespace Tests
         }
 
         [TestMethod]
-        public void RotateSquareClockwise()
+        public void RotateClockWise()
         {
+            foreach (KeyValuePair<string, Bitmap> entry in AllImages)
+            {
+                Bitmap bmp = entry.Value;
 
+                ImageManipulator im = new ImageManipulator(bmp);
+                MagickImage mi = new MagickImage(bmp);
+
+                for (int rotates = 1; rotates < 6; rotates++)
+                {
+                    foreach (bool clockwise in (new bool[] {true, false}))
+                    {
+                        im.Rotate(rotates, clockwise);
+                        int degrees = rotates * 90;
+                        if (!clockwise) degrees = -degrees;
+                        im.Rotate(rotates, clockwise);
+                        mi.Rotate(degrees);
+
+                        bool passed = BmpsAreEqual(im.ToBitmap(), mi.ToBitmap());
+
+                        if (!passed)
+                        {
+                            im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " ImageManipulator.jpg");
+                            mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + " MagickImage.jpg");
+                        }
+
+                        Assert.IsTrue(passed, $"{entry.Key} failed rotation at {degrees} degrees");
+                    }
+                }
+            }
         }
 
         [TestMethod]
-        public void RotateSquareCounterClockwise()
-        {
-
-        }
-
-        [TestMethod]
-        public void RotateRectangleClockwise()
-        {
-
-        }
-
-        [TestMethod]
-        public void RotateRectangleCounterClockwise()
+        public void RotateCounterClockwise()
         {
 
         }
