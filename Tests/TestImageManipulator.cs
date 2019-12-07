@@ -34,6 +34,7 @@ namespace Tests
 
         private Dictionary<String, Bitmap> AllImages = new Dictionary<String, Bitmap>(){
                                                             { "SquarePng" , SquarePng},
+                                                            { "SquareBmp", SquareBmp },
                                                            // {"SquareJpg" , SquareJpg},
                                                             {"RectangleBmp" , RectangleBmp},
                                                             {"RectanglePng" , RectanglePng} };
@@ -109,7 +110,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void FlipSquareVertical()
+        public void FlipVertical()
         {
             foreach (KeyValuePair<string, Bitmap> entry in AllImages)
             {
@@ -121,31 +122,41 @@ namespace Tests
                 im.Flip(true);
                 mi.Flip();
 
-                im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + "im.jpg");
-                mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + "mi.jpg");
+                bool passed = BmpsAreEqual(im.ToBitmap(), mi.ToBitmap());
 
-                Assert.IsTrue(BmpsAreEqual(im.ToBitmap(), mi.ToBitmap()), $"{entry.Key} failed");
+                if (!passed) {
+                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + "im.jpg");
+                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + "mi.jpg");
+                }
+
+                Assert.IsTrue(passed, $"{entry.Key} failed");
             }
         }
 
         [TestMethod]
-        public void FlipSquareHorizontal()
+        public void FlipHorizontal()
         {
+            foreach (KeyValuePair<string, Bitmap> entry in AllImages)
+            {
+                Bitmap bmp = entry.Value;
 
+                ImageManipulator im = new ImageManipulator(bmp);
+                MagickImage mi = new MagickImage(bmp);
+
+                im.Flip(false);
+                mi.Flop();
+
+                bool passed = BmpsAreEqual(im.ToBitmap(), mi.ToBitmap());
+
+                if (!passed)
+                {
+                    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + "im.jpg");
+                    mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + entry.Key + "mi.jpg");
+                }
+
+                Assert.IsTrue(passed, $"{entry.Key} failed");
+            }
         }
-
-        [TestMethod]
-        public void FlipRectangleVertical()
-        {
-
-        }
-
-        [TestMethod]
-        public void FlipRectangleHorizontal()
-        {
-
-        }
-
 
         [TestMethod]
         public void RotateSquareClockwise()
