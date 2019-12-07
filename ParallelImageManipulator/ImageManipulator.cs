@@ -95,38 +95,33 @@ namespace ParallelImageManipulator
         // False if 90-factor clockwise (right), True if 90-factor counter-clockwise (left)
         public void Rotate(int times, bool clockwise = true)
         {
-            // Rotate clockwise
+            // Stores rotated image
+            Color[,] rotated = new Color[Height, Width];
+
+            // Rotate counter-clockwise
             if (clockwise)
             {
                 for (int x = 0; x < times; x += 90)
                 {
-                    Parallel.For(0, Width, i =>
+                    Parallel.For(0, Height, i =>
                     {
-                        for (int j = i; j < Height - i - 1; j++)
+                        for (int j = 0; j < Width; j++)
                         {
-                            Color temp = pixels[i, j];
-                            pixels[i, j] = pixels[Height - 1 - j, i];
-                            pixels[Height - 1 - j, i] = pixels[Height - 1 - i, Height - 1 - j];
-                            pixels[Height - 1 - i, Height - 1 - j] = pixels[j, Height - 1 - i];
-                            pixels[j, Height - 1 - i] = temp;
+                            rotated[i, j] = pixels[j, Height - i - 1];
                         }
                     });
                 }
             }
-            // Rotate counterclockwise
+            // Rotate clockwise
             else
             {
                 for (int x = 0; x < times; x += 90)
                 {
-                    Parallel.For(0, Width, i =>
+                    Parallel.For(0, Height, i =>
                     {
-                        for (int j = i; j < Height - i - 1; j++)
+                        for (int j = 0; j < Width; j++)
                         {
-                            Color temp = pixels[i, j];
-                            pixels[i, j] = pixels[j, Height - 1 - i];
-                            pixels[j, Height - 1 - i] = pixels[Height - 1 - i, Height - 1 - j];
-                            pixels[Height - 1 - i, Height - 1 - j] = pixels[Height - 1 - j, i];
-                            pixels[Height - 1 - j, i] = temp;
+                            rotated[i, j] = pixels[Width - j - 1, i];
                         }
                     });
                 }
