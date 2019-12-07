@@ -16,6 +16,7 @@ using ImageMagick;
 using System.Drawing.Imaging;
 using ParallelImageManipulator;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Tests
 {
@@ -31,11 +32,12 @@ namespace Tests
                         RectanglePng = Properties.Resources.RectanglePng,
                         RectangleJpg = Properties.Resources.RectangleJpg;
 
-        private List<Bitmap> AllImages = new List<Bitmap>(){ SquarePng,
-                                                             SquareJpg,
-                                                             RectangleBmp,
-                                                             RectanglePng,
-                                                             RectangleJpg };
+        private Dictionary<String, Bitmap> AllImages = new Dictionary<String, Bitmap>(){
+                                                            { "SquarePng" , SquarePng},
+                                                            {"SquareJpg" , SquareJpg},
+                                                            {"RectangleBmp" , RectangleBmp},
+                                                            {"RectanglePng" , RectanglePng},
+                                                            {"RectangleJpg" , RectangleJpg }};
 
 
         // Requires ImageMagick installed on your machine: https://imagemagick.org/script/download.php
@@ -91,8 +93,9 @@ namespace Tests
         [TestMethod]
         public void ToBitmap()
         {
-            foreach (Bitmap bmp in AllImages)
+            foreach (KeyValuePair<string, Bitmap> entry in AllImages)
             {
+                Bitmap bmp = entry.Value;
                 ImageManipulator im = new ImageManipulator(bmp);
 
                 Assert.IsTrue(BmpsAreEqual(im.ToBitmap(), bmp));
@@ -100,10 +103,28 @@ namespace Tests
             
         }
 
+        private void TestAllImagesWithDelegate(Delegate transformer)
+        {
+
+        }
+
         [TestMethod]
         public void FlipSquareVertical()
         {
+            foreach (KeyValuePair<string, Bitmap> entry in AllImages)
+            {
+                Bitmap bmp = entry.Value;
+                ImageManipulator im = new ImageManipulator(bmp);
+                MagickImage mi = new MagickImage(bmp);
 
+                im.Flip(true);
+                mi.Flip();
+
+                im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + nameof(bmp) + "im.jpg");
+                mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipSquareVertical" + nameof(bmp) + "mi.jpg");
+
+                Assert.IsTrue(BmpsAreEqual(im.ToBitmap(), mi.ToBitmap()), "Flip works");
+            }
         }
 
         [TestMethod]
