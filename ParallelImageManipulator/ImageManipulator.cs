@@ -134,12 +134,12 @@ namespace ParallelImageManipulator
         
         public void Negate()
         {
-            Parallel.For(0, Width, i =>
+            Parallel.For(0, Width, x =>
             {
-                for (int j = 0; j < Height; j++)
+                for (int y = 0; y < Height; y++)
                 {
 
-                    Color px = pixels[i, j];
+                    Color px = pixels[x, y];
 
                     int a = px.A;
                     int r = px.R;
@@ -150,7 +150,7 @@ namespace ParallelImageManipulator
                     g = 255 - g;
                     b = 255 - b;
 
-                    pixels[i, j] = Color.FromArgb(a, r, g, b);
+                    pixels[x, y] = Color.FromArgb(a, r, g, b);
 
                 }
             });
@@ -164,12 +164,12 @@ namespace ParallelImageManipulator
                 throw new Exception("Invalid color filter specified in ImageManipulator.Filter()");
             }
 
-            Parallel.For(0, Width, i =>
+            Parallel.For(0, Width, x =>
             {
-                for (int j = 0; j < Height; j++)
+                for (int y = 0; y < Height; y++)
                 {
                     byte newR = 0, newG = 0, newB = 0;
-                    Color px = pixels[i, j];
+                    Color px = pixels[x, y];
 
                     switch (color)
                     {
@@ -194,7 +194,7 @@ namespace ParallelImageManipulator
                     newG = Math.Min((byte)255, Math.Max(newG, (byte)0));
                     newB = Math.Min((byte)255, Math.Max(newB, (byte)0));
 
-                    pixels[i, j] = Color.FromArgb(px.A, newR, newG, newB);
+                    pixels[x, y] = Color.FromArgb(px.A, newR, newG, newB);
                 }
             });
         }
