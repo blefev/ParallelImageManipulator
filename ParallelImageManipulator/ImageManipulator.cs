@@ -169,31 +169,31 @@ namespace ParallelImageManipulator
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    byte newR = 0, newG = 0, newB = 0;
+                    int newR = 0, newG = 0, newB = 0;
                     Color px = pixels[x, y];
 
                     switch (color)
                     {
                         case "R":
-                            newR = px.R;
-                            newG = (byte)(px.G - 255);
-                            newB = (byte)(px.B - 255);
+                            newR = (int)px.R;
+                            newG = (px.G - 255);
+                            newB = (px.B - 255);
                             break;
                         case "G":
-                            newR = (byte)(px.B - 255);
-                            newG = px.G;
-                            newB = (byte)(px.B - 255);
+                            newR = (px.B - 255);
+                            newG = (int)px.G;
+                            newB = (px.B - 255);
                             break;
                         case "B":
-                            newR = (byte)(px.B - 255);
-                            newG = (byte)(px.G - 255);
-                            newB = px.B;
+                            newR = (px.B - 255);
+                            newG = (px.G - 255);
+                            newB = (int)px.B;
                             break;
                     }
                     // Keep range between 0 and 255
-                    newR = Math.Min((byte)255, Math.Max(newR, (byte)0));
-                    newG = Math.Min((byte)255, Math.Max(newG, (byte)0));
-                    newB = Math.Min((byte)255, Math.Max(newB, (byte)0));
+                    newR = Math.Min(255, Math.Max(newR, 0));
+                    newG = Math.Min(255, Math.Max(newG, 0));
+                    newB = Math.Min(255, Math.Max(newB, 0));
 
                     pixels[x, y] = Color.FromArgb(px.A, newR, newG, newB);
                 }

@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace ParallelImageManipulator
 {
@@ -8,6 +9,8 @@ namespace ParallelImageManipulator
     {
         static void Main(string[] args)
         {
+            
+
             string path = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
 
             Bitmap img = new Bitmap($"{path}\\Resources\\face.jpg");
@@ -25,6 +28,12 @@ namespace ParallelImageManipulator
             img.Save("input.bmp", ImageFormat.Bmp);
 
             return img;
+        }
+
+        private void SetParallelismToCoreCount()
+        {
+            ParallelOptions options = new ParallelOptions();
+            options.MaxDegreeOfParallelism = System.Environment.ProcessorCount;
         }
     }
 }

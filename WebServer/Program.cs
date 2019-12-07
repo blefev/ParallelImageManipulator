@@ -10,15 +10,20 @@ namespace WebServer
 {
     class Program
     {
-
-
         static void Main(string[] args)
         {
+            SetParallelismToCoreCount();
             WebServer ws = new WebServer();
             Console.WriteLine("Starting server...");
             ws.Start();
         }
 
-
+        static private void SetParallelismToCoreCount()
+        {
+            ParallelOptions options = new ParallelOptions();
+            options.MaxDegreeOfParallelism = System.Environment.ProcessorCount;
+        }
     }
+
+
 }
