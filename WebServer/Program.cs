@@ -13,7 +13,8 @@ namespace WebServer
         static void Main(string[] args)
         {
             SetParallelismToCoreCount();
-            WebServer ws = new WebServer();
+            string url = "http://localhost:8080/";
+            WebServer ws = new WebServer(url, Console.Out);
             Console.WriteLine("Starting server...");
             ws.Start(); 
         }

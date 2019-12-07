@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Drawing;
 using ParallelImageManipulator;
-
+using System.Threading;
 
 namespace WebServer
 {
@@ -17,16 +17,34 @@ namespace WebServer
     {
         public HttpListener listener;
         public string url = "http://localhost:8080/";
+        private TextWriter output;
         JsonSerializer serializer;
 
         public WebServer()
         {
+            output = Console.Out;
             listener = new HttpListener();
             serializer = new JsonSerializer();
         }
 
         public WebServer(string prefix)
         {
+            output = Console.Out;
+            listener = new HttpListener();
+            serializer = new JsonSerializer();
+            url = prefix;
+        }
+
+        public WebServer(TextWriter textWriter)
+        {
+            output = textWriter;
+            listener = new HttpListener();
+            serializer = new JsonSerializer();
+        }
+
+        public WebServer(string prefix, TextWriter textWriter)
+        {
+            output = textWriter;
             listener = new HttpListener();
             serializer = new JsonSerializer();
             url = prefix;
@@ -35,34 +53,45 @@ namespace WebServer
         public void Start()
         {
             listener.Prefixes.Add(url);
+            output.WriteLine("Starting WebServer on " + url);
             listener.Start();
+            output.WriteLine("WebServer started");
 
             while (true)
             {
                 HttpListenerContext context = listener.GetContext();
-                HttpListenerRequest request = context.Request;
-                HttpListenerResponse response = context.Response;
 
-                // NEED TO PARALLELIZE RIGHT HERE! send request/response, or entire context?
-
-                string responseString = "";
-
-                if (request.HttpMethod == "POST")
-                {
-                    responseString = Post(request);
-                    
-                }
-
-                response.ContentType = "application/json";
-                // Construct a response.
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
-                // Get a response stream and write the response to it.
-                response.ContentLength64 = buffer.Length;
-                System.IO.Stream output = response.OutputStream;
-                output.Write(buffer, 0, buffer.Length);
-                // You must close the output stream.
-                output.Close();
+                Thread requestHandler = new Thread(new ParameterizedThreadStart(this.dowork));
+                requestHandler.Start(context);
             }
+        }
+
+        public void dowork(object contextObj)
+        {
+            HttpListenerContext context = (HttpListenerContext)contextObj;
+            HttpListenerRequest request = context.Request;
+            HttpListenerResponse response = context.Response;
+
+            output.WriteLine($"========================\nReceived request: {request.HttpMethod} {request.Url} {request.Headers}");
+
+            string responseString = "";
+
+            if (request.HttpMethod == "POST")
+            {
+                responseString = Post(request);
+            }
+
+            response.ContentType = "application/json";
+            // Construct a response.
+            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
+            // Get a response stream and write the response to it.
+            response.ContentLength64 = buffer.Length;
+            System.IO.Stream responseOutput = response.OutputStream;
+            responseOutput.Write(buffer, 0, buffer.Length);
+            // You must close the output stream.
+            responseOutput.Close();
+
+            output.WriteLine($"========================\nSent response string: {response.Headers}");
         }
 
         // example json
@@ -80,9 +109,7 @@ namespace WebServer
 
                     if (requestJson.image == null)
                     {
-                        return @"{
-                            'error': 'No image provided'
-                        }";
+                        return @"{'error': 'No image provided'}";
                     }
 
 
@@ -96,19 +123,55 @@ namespace WebServer
                             im.Grayscale();
                             break;
                         case "flip":
-                            // TODO support args!
-                            im.Flip(false);
+                            bool vertical;
+
+                            if (requestJson["args"] != null && requestJson.args["vertical"] != null)
+                            {
+                                vertical = (bool)requestJson.args.vertical;
+                                im.Flip(vertical);
+                            } else {
+                                jsonResponse = $@"{{'error': 'Missing ""args.vertical""'}}";
+                                return jsonResponse;
+                            }
+
                             break;
                         case "rotate":
-                            // TODO support args!
-                            im.Rotate(1, true);
+                            if (requestJson["args"] != null 
+                                && requestJson.args["clockwise"] != null 
+                                && requestJson.args["rotates"] != null)
+                            {
+                                bool clockwise = (bool)requestJson.args.clockwise;
+                                int rotates = (int)requestJson.args.rotates;
+                                im.Rotate(1, true);
+                            }
+                            else
+                            {
+                                jsonResponse = $@"{{'error': 'Missing ""args.clockwise"" or ""args.rotates""'}}";
+                                return jsonResponse;
+                            }
+                            
+                            
                             break;
                         case "filter":
-                            // TODO support args!
-                            im.Filter("R");
+                            // color can be one of: R, G, B
+                            if (requestJson["args"] != null && requestJson.args["color"] != null)
+                            {
+                                string color = (string)requestJson.args.color;
+                                im.Filter(color);
+                            }
+                            else
+                            {
+                                jsonResponse = $@"{{'error': 'Missing ""args.clockwise"" or ""args.rotates""'}}";
+                                return jsonResponse;
+                            }
+                            
+                            break;
+                        case "negate":
+                            im.Grayscale();
+                            break;
+                        default:
                             break;
                     }
-
                     string b64img = Base64FromBitmap(im.ToBitmap());
 
                     jsonResponse = $@"{{
@@ -117,9 +180,7 @@ namespace WebServer
                 } 
                 else
                 {
-                    jsonResponse = $@"{{
-                        'error': 'Invalid Content-Type. Must be json or application/json'
-                    }}";
+                    jsonResponse = $@"{{'error': 'Invalid Content-Type. Must be json or application/json'}}";
                 }
                 return jsonResponse;
             }
