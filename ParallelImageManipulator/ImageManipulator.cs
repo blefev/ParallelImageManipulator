@@ -153,7 +153,7 @@ namespace ParallelImageManipulator
         }
 
         // For Brightness()
-        void Truncate(int value)
+        public int Truncate(int value)
         {
             if (value < 0)
             {
