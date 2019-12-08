@@ -231,9 +231,9 @@ namespace Tests
                     MagickImage mi = new MagickImage(bmp);
 
                     im.Filter(color);
-                    im.ToBitmap().Save($"{BaseDir}\\Resources\\Answers\\Filter" +color + entry.Key);
-                    /*
-                    bool passed = BmpsAreEqual(im.ToBitmap(), mi.ToBitmap());
+                    Bitmap answer = new Bitmap($"{BaseDir}\\Resources\\Answers\\Filter" +color + entry.Key);
+
+                    bool passed = BmpsAreEqual(im.ToBitmap(), answer);
 
                     if (!passed)
                     {
@@ -242,7 +242,6 @@ namespace Tests
                     }
 
                     Assert.IsTrue(passed, $"{entry.Key} failed");
-                    */
                 }
             }
         }
