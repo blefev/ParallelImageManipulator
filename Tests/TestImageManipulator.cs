@@ -265,5 +265,34 @@ namespace Tests
                 }
             }
         }
+
+        [TestMethod]
+        public void Blur()
+        {
+            foreach (int neighborDist in new int[] { 1, 4, 8 })
+            {
+                {
+                    foreach (KeyValuePair<string, Bitmap> entry in AllImages)
+                    {
+                        Bitmap bmp = entry.Value;
+
+                        ImageManipulator im = new ImageManipulator(bmp);
+
+                        im.Blur(neighborDist);
+                        //Bitmap answer = new Bitmap
+                        im.ToBitmap().Save($"{BaseDir}\\Resources\\Answers\\Blur" + neighborDist + entry.Key);
+
+                        //bool passed = BmpsAreEqual(im.ToBitmap(), answer);
+
+                        //if (!passed)
+                        //{
+                        //    im.ToBitmap().Save($"{BaseDir}\\TestOutput\\Filter" + entry.Key + " ImageManipulator.png");
+                        //}
+
+                        //Assert.IsTrue(passed, $"{entry.Key} failed at brightness ${neighborDist}");
+                    }
+                }
+            }
+        }
     }
 }

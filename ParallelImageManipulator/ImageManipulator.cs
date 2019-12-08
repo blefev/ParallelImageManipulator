@@ -49,7 +49,7 @@ namespace ParallelImageManipulator
         // Simple fixed box blur with kernel of 1/9
         public void Blur(int neighborDist = 1)
         {
-            Color[,] tmpPixels = new Color[Height, Width];
+            Color[,] tmpPixels = new Color[Width, Height];
             // Doing this in two parts:
             // 1: Calculate 1/N of each pixel for moving average
             // 2: Use these values for blur values of pixels
