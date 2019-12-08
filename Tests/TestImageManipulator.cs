@@ -227,7 +227,6 @@ namespace Tests
                     Bitmap bmp = entry.Value;
 
                     ImageManipulator im = new ImageManipulator(bmp);
-                    MagickImage mi = new MagickImage(bmp);
 
                     im.Filter(color);
                     Bitmap answer = new Bitmap($"{BaseDir}\\Resources\\Answers\\Filter" +color + entry.Key);
@@ -237,10 +236,35 @@ namespace Tests
                     if (!passed)
                     {
                         im.ToBitmap().Save($"{BaseDir}\\TestOutput\\Filter" + entry.Key + " ImageManipulator.png");
-                        mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\Filter" + entry.Key + " MagickImage.png");
                     }
 
                     Assert.IsTrue(passed, $"{entry.Key} failed");
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Brightness()
+        {
+            for (int val = -255; val < 255; val += 64)
+            {
+                foreach (KeyValuePair<string, Bitmap> entry in AllImages)
+                {
+                    Bitmap bmp = entry.Value;
+
+                    ImageManipulator im = new ImageManipulator(bmp);
+
+                    im.Brightness(val);
+                    Bitmap answer = new Bitmap($"{BaseDir}\\Resources\\Answers\\Brightness" + val + entry.Key);
+
+                    bool passed = BmpsAreEqual(im.ToBitmap(), answer);
+
+                    if (!passed)
+                    {
+                        im.ToBitmap().Save($"{BaseDir}\\TestOutput\\Filter" + entry.Key + " ImageManipulator.png");
+                    }
+
+                    Assert.IsTrue(passed, $"{entry.Key} failed at brightness ${val}");
                 }
             }
         }
