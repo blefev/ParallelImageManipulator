@@ -46,23 +46,28 @@ namespace ParallelImageManipulator
             return bitmap;
         }
 
-        // Simple fixed box blur with 3x3 kernel of 1/9
-        public void Blur()
+        // Simple fixed box blur with kernel of 1/9
+        public void Blur(int neighborDist = 1)
         {
             Color[,] tmpPixels = new Color[Height, Width];
             // Doing this in two parts:
-            // 1: Calculate 1/9 of each pixel
+            // 1: Calculate 1/N of each pixel for moving average
             // 2: Use these values for blur values of pixels
             Parallel.For(0, Width, x =>
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    double oneNinth = 1.0 / 9.0;
+                    // calculate how many will be in neighborhood
+                    // if neighborDist = 1, we go to each neighbor 1 unit away
+                    // 1 * 2 + 1 = 3. 3 ^ 2 = 9. we will have a 3x3 kernel with 9 
+                    // total neighbors. the fraction is used for the
+                    // moving average
+                    double fraction = 1.0 / (int)Math.Pow((neighborDist * 2 + 1), 2);
                     Color px = pixels[x, y];
-                    int A = (int)(oneNinth * px.A);
-                    int R = (int)(oneNinth * px.R);
-                    int G = (int)(oneNinth * px.G);
-                    int B = (int)(oneNinth * px.B);
+                    int A = (int)(fraction * px.A);
+                    int R = (int)(fraction * px.R);
+                    int G = (int)(fraction * px.G);
+                    int B = (int)(fraction * px.B);
 
                     Color newPx = Color.FromArgb(A, R, G, B);
                     tmpPixels[x, y] = newPx;
@@ -76,16 +81,16 @@ namespace ParallelImageManipulator
 
                     int A = 0, R = 0, G = 0, B = 0;
                     // Iterate through neighbors
-                    for(int i = -1; i++ <= 1; )
+                    for(int i = -neighborDist; i++ <= neighborDist; )
                     {
-                        if (x - i < 0 || x - 1 - i > Width) continue;
-                        for (int j = -1; j++ <= 1;)
+                        if (x + i < 0 || x + i + 1 > Width) continue;
+                        for (int j = -neighborDist; j++ <= neighborDist;)
                         {
-                            if (y - j < 0 || y - 1 - j > Width) continue;
-                            A += tmpPixels[x - i, y - j].A;
-                            R += tmpPixels[x - i, y - j].R;
-                            G += tmpPixels[x - i, y - j].G;
-                            B += tmpPixels[x - i, y - j].B;
+                            if (y + j < 0 || y + j + 1 > Height) continue;
+                            A += tmpPixels[x + i, y + j].A;
+                            R += tmpPixels[x + i, y + j].R;
+                            G += tmpPixels[x + i, y + j].G;
+                            B += tmpPixels[x + i, y + j].B;
                         }
                     }
                     // replace pixels

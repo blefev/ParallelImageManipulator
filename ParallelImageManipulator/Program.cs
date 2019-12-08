@@ -14,7 +14,7 @@ namespace ParallelImageManipulator
             /* TODO: use commandline arguments */
             Bitmap img = new Bitmap($"{path}\\..\\Tests\\Resources\\Square.png");
             ImageManipulator im = new ImageManipulator(img);
-            im.Blur(); im.Blur(); im.Blur(); im.Blur(); im.Blur();
+            im.Blur(9);
             Bitmap ret = im.ToBitmap();
             ret.Save($"{path}\\Output\\output.jpg");
         }
