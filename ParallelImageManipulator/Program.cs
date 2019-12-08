@@ -16,10 +16,7 @@ namespace ParallelImageManipulator
             /* TODO: use commandline arguments */
             Bitmap img = new Bitmap($"{path}\\Resources\\face.jpg");
             ImageManipulator im = new ImageManipulator(img);
-            im.Rotate(1, true);
-            im.Grayscale();
-            im.Filter("R");
-            im.Negate();
+            im.Rotate(3, false);
             Bitmap ret = im.ToBitmap();
             ret.Save($"{path}\\Output\\output.jpg");
         }

@@ -95,11 +95,21 @@ namespace ParallelImageManipulator
         // False if 90-factor clockwise (right), True if 90-factor counter-clockwise (left)
         public void Rotate(int times, bool clockwise = true)
         {
+            times = times % 4; // max rotations is 4
+
+            // if rotation times == 4, do nothing
+            if (times == 4 || times == 0) return;
+
+            // if rotation times == 2, it's just a vertical flip
+            if (times == 2) { Flip(true); return; };
+
             // Stores rotated image
-            Color[,] rotated = new Color[Height, Width];
+            int newWidth = Height;
+            int newHeight = Width;
+            Color[,] rotated = new Color[newWidth, newHeight];
 
             // Rotate counter-clockwise
-            if (clockwise)
+            if (!clockwise)
             {
                 for (int x = 0; x < times; x += 90)
                 {
@@ -126,6 +136,9 @@ namespace ParallelImageManipulator
                     });
                 }
             }
+            Height = newHeight;
+            Width = newWidth;
+            pixels = rotated;
         }
 
         public void Brightness(int brightness)
