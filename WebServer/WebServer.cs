@@ -93,7 +93,7 @@ namespace WebServer
         }
 
         // example json
-        // { image: ..., filter: ..., args: { ... } }
+        // { image: ..., transformation: ..., args: { ... } }
         private string Post(HttpListenerRequest request, HttpListenerResponse response)
         {
             try
@@ -111,14 +111,14 @@ namespace WebServer
                         response.StatusCode = 400;
                         return @"{'error': 'No image provided'}";
                     }
-                    else if (requestJson["filter"] == null)
+                    else if (requestJson["transformation"] == null)
                     {
-                        return "{'error': 'Please specify a filter'}";
+                        return "{'error': 'Please specify a transformation'}";
                     }
 
-                    string filter = ((string)requestJson["filter"]).ToLower();
+                    string transformation = ((string)requestJson["transformation"]).ToLower();
 
-                    jsonResponse = Filter(filter, requestJson, response);
+                    jsonResponse = Transform(transformation, requestJson, response);
 
                 }
                 else
@@ -155,7 +155,7 @@ namespace WebServer
             return dataUri;
         }
 
-        private string Filter(string filter, dynamic requestJson, HttpListenerResponse response)
+        private string Transform(string transformation, dynamic requestJson, HttpListenerResponse response)
         {
             string b64reqImg = (string)requestJson["image"];
             string dataUri = ProcessAndRemoveDataTag(ref b64reqImg);
@@ -165,7 +165,7 @@ namespace WebServer
             ImageManipulator im = new ImageManipulator(bmp);
 
             string jsonResponse = "";
-            switch (filter)
+            switch (transformation)
             {
                 case "grayscale":
                     im.Grayscale();
@@ -221,6 +221,36 @@ namespace WebServer
                     break;
                 case "negate":
                     im.Grayscale();
+                    break;
+                case "blur":
+                    // color can be one of: R, G, B
+                    if (requestJson["args"] != null && requestJson.args["neighborDist"] != null)
+                    {
+                        int neighborDist = (int)requestJson.args.neighborDist;
+                        im.Blur(neighborDist);
+                    }
+                    else
+                    {
+                        response.StatusCode = 400;
+                        jsonResponse = $@"{{'error': 'Missing ""args.neighborDist""'}}";
+                        return jsonResponse;
+                    }
+
+                    break;
+                case "brightness":
+                    // color can be one of: R, G, B
+                    if (requestJson["args"] != null && requestJson.args["value"] != null)
+                    {
+                        int value = (int)requestJson.args.value;
+                        im.Brightness(value);
+                    }
+                    else
+                    {
+                        response.StatusCode = 400;
+                        jsonResponse = $@"{{'error': 'Missing ""args.value""'}}";
+                        return jsonResponse;
+                    }
+
                     break;
                 default:
                     break;
