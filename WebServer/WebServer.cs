@@ -10,6 +10,7 @@ using System.IO;
 using System.Drawing;
 using ParallelImageManipulator;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace WebServer
 {
@@ -78,7 +79,7 @@ namespace WebServer
 
             if (request.HttpMethod == "POST")
             {
-                responseString = Post(request);
+                responseString = Post(request, response);
             }
 
             response.ContentType = "application/json";
@@ -96,7 +97,7 @@ namespace WebServer
 
         // example json
         // { image: ..., filter: ..., args: { ... } }
-        private string Post(HttpListenerRequest request)
+        private string Post(HttpListenerRequest request, HttpListenerResponse response)
         {
             try { 
                 string contentType = request.ContentType;
@@ -109,90 +110,127 @@ namespace WebServer
 
                     if (requestJson.image == null)
                     {
+                        response.StatusCode = 400;
                         return @"{'error': 'No image provided'}";
+                    } 
+                    else if (requestJson["filter"] == null) 
+                    {
+                        return "{'error': 'Please specify a filter'}";
                     }
 
-
-                    Bitmap bmp = BitmapFromBase64((string)requestJson["image"]);
                     string filter = ((string)requestJson["filter"]).ToLower();
 
-                    ImageManipulator im = new ImageManipulator(bmp);
+                    jsonResponse = Filter(filter, requestJson, response);
 
-                    switch (filter) {
-                        case "grayscale":
-                            im.Grayscale();
-                            break;
-                        case "flip":
-                            bool vertical;
-
-                            if (requestJson["args"] != null && requestJson.args["vertical"] != null)
-                            {
-                                vertical = (bool)requestJson.args.vertical;
-                                im.Flip(vertical);
-                            } else {
-                                jsonResponse = $@"{{'error': 'Missing ""args.vertical""'}}";
-                                return jsonResponse;
-                            }
-
-                            break;
-                        case "rotate":
-                            if (requestJson["args"] != null 
-                                && requestJson.args["clockwise"] != null 
-                                && requestJson.args["rotates"] != null)
-                            {
-                                bool clockwise = (bool)requestJson.args.clockwise;
-                                int rotates = (int)requestJson.args.rotates;
-                                im.Rotate(1, true);
-                            }
-                            else
-                            {
-                                jsonResponse = $@"{{'error': 'Missing ""args.clockwise"" or ""args.rotates""'}}";
-                                return jsonResponse;
-                            }
-                            
-                            
-                            break;
-                        case "filter":
-                            // color can be one of: R, G, B
-                            if (requestJson["args"] != null && requestJson.args["color"] != null)
-                            {
-                                string color = (string)requestJson.args.color;
-                                im.Filter(color);
-                            }
-                            else
-                            {
-                                jsonResponse = $@"{{'error': 'Missing ""args.clockwise"" or ""args.rotates""'}}";
-                                return jsonResponse;
-                            }
-                            
-                            break;
-                        case "negate":
-                            im.Grayscale();
-                            break;
-                        default:
-                            break;
-                    }
-                    string b64img = Base64FromBitmap(im.ToBitmap());
-
-                    jsonResponse = $@"{{
-                        'image': {b64img}
-                    }}";
                 } 
                 else
                 {
+                    response.StatusCode = 400;
                     jsonResponse = $@"{{'error': 'Invalid Content-Type. Must be json or application/json'}}";
                 }
                 return jsonResponse;
             }
             catch (Exception e)
             {
-                
-                return @"{
-                    'error': ""Exception: " + System.Web.HttpUtility.JavaScriptStringEncode(e.Message) + @""",
-                    'stacktrace': """ + e.StackTrace + @"""
+                response.StatusCode = 500;
+                return "{'error':'" + System.Web.HttpUtility.JavaScriptStringEncode(e.Message) + "'"
+                    + "'stacktrace': " + System.Web.HttpUtility.JavaScriptStringEncode(e.StackTrace) + "'}";
             }
-            ";
+        }
+
+        private string ProcessAndRemoveDataTag(ref string b64reqImg)
+        {
+            Regex re = new Regex(@"^data:image/\w+;base64,");
+
+            if (!re.IsMatch(b64reqImg)) {
+                throw new Exception("Invalid base64 image" + b64reqImg);
             }
+
+            MatchCollection matches = re.Matches(b64reqImg);
+            string dataUri = matches[0].ToString();
+
+            // strip dataUri out for processing base64
+            b64reqImg = b64reqImg.Replace(dataUri, "");
+
+            // return dataUri for adding back to image later
+            return dataUri;
+        }
+
+        private string Filter(string filter, dynamic requestJson, HttpListenerResponse response)
+        {
+            string b64reqImg = (string)requestJson["image"];
+            string dataUri = ProcessAndRemoveDataTag(ref b64reqImg);
+
+            Bitmap bmp = BitmapFromBase64(b64reqImg);
+            
+            ImageManipulator im = new ImageManipulator(bmp);
+
+            string jsonResponse = "";
+            switch (filter)
+            {
+                case "grayscale":
+                    im.Grayscale();
+                    break;
+                case "flip":
+                    bool vertical;
+
+                    if (requestJson["args"] != null && requestJson.args["vertical"] != null)
+                    {
+                        vertical = (bool)requestJson.args.vertical;
+                        im.Flip(vertical);
+                    }
+                    else
+                    {
+                        response.StatusCode = 400;
+                        jsonResponse = $@"{{'error': 'Missing ""args.vertical""'}}";
+                        return jsonResponse;
+                    }
+
+                    break;
+                case "rotate":
+                    if (requestJson["args"] != null
+                        && requestJson.args["clockwise"] != null
+                        && requestJson.args["rotates"] != null)
+                    {
+                        bool clockwise = (bool)requestJson.args.clockwise;
+                        int rotates = (int)requestJson.args.rotates;
+                        im.Rotate(1, true);
+                    }
+                    else
+                    {
+                        response.StatusCode = 400;
+                        jsonResponse = $@"{{'error': 'Missing ""args.clockwise"" or ""args.rotates""'}}";
+                        return jsonResponse;
+                    }
+
+
+                    break;
+                case "filter":
+                    // color can be one of: R, G, B
+                    if (requestJson["args"] != null && requestJson.args["color"] != null)
+                    {
+                        string color = (string)requestJson.args.color;
+                        im.Filter(color);
+                    }
+                    else
+                    {
+                        response.StatusCode = 400;
+                        jsonResponse = $@"{{'error': 'Missing ""args.clockwise"" or ""args.rotates""'}}";
+                        return jsonResponse;
+                    }
+
+                    break;
+                case "negate":
+                    im.Grayscale();
+                    break;
+                default:
+                    break;
+            }
+            string b64img = Base64FromBitmap(im.ToBitmap());
+
+            jsonResponse = "{'image':'" + dataUri + b64img + "'}";
+
+            return jsonResponse;
         }
 
         private string GetRequestBody(HttpListenerRequest request)
