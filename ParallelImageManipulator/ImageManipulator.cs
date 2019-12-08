@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Drawing;
 
 namespace ParallelImageManipulator
 {
@@ -81,7 +81,7 @@ namespace ParallelImageManipulator
 
                     int A = 0, R = 0, G = 0, B = 0;
                     // Iterate through neighbors
-                    for(int i = -neighborDist; i++ <= neighborDist; )
+                    for (int i = -neighborDist; i++ <= neighborDist;)
                     {
                         if (x + i < 0 || x + i + 1 > Width) continue;
                         for (int j = -neighborDist; j++ <= neighborDist;)
@@ -94,7 +94,7 @@ namespace ParallelImageManipulator
                         }
                     }
                     // replace pixels
-                    pixels[x,y] = Color.FromArgb(A, R, G, B);
+                    pixels[x, y] = Color.FromArgb(A, R, G, B);
                 }
             });
         }
@@ -187,12 +187,12 @@ namespace ParallelImageManipulator
             {
                 Parallel.For(0, Width, x =>
                 {
-                    for(int y = 0; y < Height; y++)
+                    for (int y = 0; y < Height; y++)
                     {
                         rotated[newWidth - 1 - x, newHeight - 1 - y] = pixels[x, y];
                     }
                 });
-            } 
+            }
             // Rotate clockwise
             else if (times == 3)
             {

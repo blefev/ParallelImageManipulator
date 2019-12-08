@@ -1,16 +1,13 @@
-﻿using System;
-using System.Net;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.IO;
-using System.Drawing;
 using ParallelImageManipulator;
-using System.Threading;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace WebServer
 {
@@ -99,7 +96,8 @@ namespace WebServer
         // { image: ..., filter: ..., args: { ... } }
         private string Post(HttpListenerRequest request, HttpListenerResponse response)
         {
-            try { 
+            try
+            {
                 string contentType = request.ContentType;
 
                 string jsonResponse = "";
@@ -112,8 +110,8 @@ namespace WebServer
                     {
                         response.StatusCode = 400;
                         return @"{'error': 'No image provided'}";
-                    } 
-                    else if (requestJson["filter"] == null) 
+                    }
+                    else if (requestJson["filter"] == null)
                     {
                         return "{'error': 'Please specify a filter'}";
                     }
@@ -122,7 +120,7 @@ namespace WebServer
 
                     jsonResponse = Filter(filter, requestJson, response);
 
-                } 
+                }
                 else
                 {
                     response.StatusCode = 400;
@@ -142,7 +140,8 @@ namespace WebServer
         {
             Regex re = new Regex(@"^data:image/\w+;base64,");
 
-            if (!re.IsMatch(b64reqImg)) {
+            if (!re.IsMatch(b64reqImg))
+            {
                 throw new Exception("Invalid base64 image" + b64reqImg);
             }
 
@@ -162,7 +161,7 @@ namespace WebServer
             string dataUri = ProcessAndRemoveDataTag(ref b64reqImg);
 
             Bitmap bmp = BitmapFromBase64(b64reqImg);
-            
+
             ImageManipulator im = new ImageManipulator(bmp);
 
             string jsonResponse = "";

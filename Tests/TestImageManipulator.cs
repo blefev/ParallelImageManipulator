@@ -8,17 +8,13 @@
  * Need test images. Make known-good images for use in tests.
  * 
  */
-using System;
+using ImageMagick;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ParallelImageManipulator;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using ImageMagick;
-using System.Drawing.Imaging;
-using ParallelImageManipulator;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace Tests
 {
@@ -28,9 +24,9 @@ namespace Tests
     public class TestImageManipulator
     {
         private static string BaseDir = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
-        private static Bitmap  SquareBmp    = Properties.Resources.SquareBmp,
-                        SquarePng    = Properties.Resources.SquarePng,
-                        SquareJpg    = Properties.Resources.SquareJpg,
+        private static Bitmap SquareBmp = Properties.Resources.SquareBmp,
+                        SquarePng = Properties.Resources.SquarePng,
+                        SquareJpg = Properties.Resources.SquareJpg,
                         RectangleBmp = Properties.Resources.RectangleBmp,
                         RectanglePng = Properties.Resources.RectanglePng,
                         RectangleJpg = Properties.Resources.RectangleJpg;
@@ -63,7 +59,7 @@ namespace Tests
             return true;
         }
 
-        
+
 
         [TestMethod]
         public void BmpsAreEqualWorks()
@@ -83,7 +79,7 @@ namespace Tests
 
                 Assert.IsTrue(BmpsAreEqual(im.ToBitmap(), bmp));
             }
-            
+
         }
 
         [TestMethod]
@@ -125,7 +121,8 @@ namespace Tests
 
                 bool passed = BmpsAreEqual(im.ToBitmap(), mi.ToBitmap());
 
-                if (!passed) {
+                if (!passed)
+                {
                     im.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipVertical" + entry.Key + " ImageManipulator.png");
                     mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\FlipVertical" + entry.Key + " MagickImage.png");
                 }
@@ -171,7 +168,7 @@ namespace Tests
 
                 for (int rotates = 1; rotates < 6; rotates++)
                 {
-                    foreach (bool clockwise in (new bool[] {true, false}))
+                    foreach (bool clockwise in (new bool[] { true, false }))
                     {
                         im.Rotate(rotates, clockwise);
                         int degrees = rotates * 90;
@@ -229,7 +226,7 @@ namespace Tests
                     ImageManipulator im = new ImageManipulator(bmp);
 
                     im.Filter(color);
-                    Bitmap answer = new Bitmap($"{BaseDir}\\Resources\\Answers\\Filter" +color + entry.Key);
+                    Bitmap answer = new Bitmap($"{BaseDir}\\Resources\\Answers\\Filter" + color + entry.Key);
 
                     bool passed = BmpsAreEqual(im.ToBitmap(), answer);
 
