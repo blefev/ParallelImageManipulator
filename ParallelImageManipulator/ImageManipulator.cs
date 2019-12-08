@@ -95,46 +95,61 @@ namespace ParallelImageManipulator
         // False if 90-factor clockwise (right), True if 90-factor counter-clockwise (left)
         public void Rotate(int times, bool clockwise = true)
         {
+            if (!clockwise) times += 2; // counterclockwise is same as clockwise + 2 turns
             times = times % 4; // max rotations is 4
 
             // if rotation times == 4, do nothing
             if (times == 4 || times == 0) return;
 
-            // if rotation times == 2, it's just a vertical flip
-            if (times == 2) { Flip(true); return; };
+
+            int newWidth;
+            int newHeight;
 
             // Stores rotated image
-            int newWidth = Height;
-            int newHeight = Width;
-            Color[,] rotated = new Color[newWidth, newHeight];
-
-            // Rotate counter-clockwise
-            if (!clockwise)
+            if (times != 2)
             {
-                for (int x = 0; x < times; x += 90)
-                {
-                    Parallel.For(0, Height, i =>
-                    {
-                        for (int j = 0; j < Width; j++)
-                        {
-                            rotated[i, j] = pixels[j, Height - i - 1];
-                        }
-                    });
-                }
+                newWidth = Height;
+                newHeight = Width;
             }
-            // Rotate clockwise
             else
             {
-                for (int x = 0; x < times; x += 90)
+                newWidth = Width;
+                newHeight = Height;
+            }
+
+            Color[,] rotated = new Color[newWidth, newHeight];
+
+            if (times == 1)
+            {
+                Parallel.For(0, Height, i =>
                 {
-                    Parallel.For(0, Height, i =>
+                    for (int j = 0; j < Width; j++)
                     {
-                        for (int j = 0; j < Width; j++)
-                        {
-                            rotated[i, j] = pixels[Width - j - 1, i];
-                        }
-                    });
-                }
+                        rotated[i, j] = pixels[j, Height - i - 1];
+                    }
+                });
+            }
+            // Rotate counter-clockwise
+            else if (times == 2)
+            {
+                Parallel.For(0, Width, x =>
+                {
+                    for(int y = 0; y < Height; y++)
+                    {
+                        rotated[newWidth - 1 - x, newHeight - 1 - y] = pixels[x, y];
+                    }
+                });
+            } 
+            // Rotate clockwise
+            else if (times == 3)
+            {
+                Parallel.For(0, Height, i =>
+                {
+                    for (int j = 0; j < Width; j++)
+                    {
+                        rotated[i, j] = pixels[Width - j - 1, i];
+                    }
+                });
             }
             Height = newHeight;
             Width = newWidth;

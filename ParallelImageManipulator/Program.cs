@@ -14,9 +14,9 @@ namespace ParallelImageManipulator
             string path = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
 
             /* TODO: use commandline arguments */
-            Bitmap img = new Bitmap($"{path}\\Resources\\face.jpg");
+            Bitmap img = new Bitmap($"{path}\\..\\Tests\\Resources\\Square.png");
             ImageManipulator im = new ImageManipulator(img);
-            im.Rotate(3, false);
+            im.Rotate(2, true);
             Bitmap ret = im.ToBitmap();
             ret.Save($"{path}\\Output\\output.jpg");
         }

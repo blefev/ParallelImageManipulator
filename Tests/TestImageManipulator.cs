@@ -175,15 +175,14 @@ namespace Tests
                     {
                         im.Rotate(rotates, clockwise);
                         int degrees = rotates * 90;
-                        if (!clockwise) degrees = -degrees;
-                        im.Rotate(rotates, clockwise);
+                        if (!clockwise) degrees += 180;
                         mi.Rotate(degrees);
 
                         bool passed = BmpsAreEqual(im.ToBitmap(), mi.ToBitmap());
 
                         if (!passed)
                         {
-                            im.ToBitmap().Save($"{BaseDir}\\TestOutput\\Rotate" + entry.Key + " ImageManipulator.png");
+                            im.ToBitmap().Save($"{BaseDir}\\TestOutput\\Rotate" + entry.Key + " " + degrees + " ImageManipulator.png");
                             mi.ToBitmap().Save($"{BaseDir}\\TestOutput\\Rotate" + entry.Key + " MagickImage.png");
                         }
 
