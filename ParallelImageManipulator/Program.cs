@@ -9,22 +9,14 @@ namespace ParallelImageManipulator
     {
         static void Main(string[] args)
         {
-            SetParallelismToCoreCount();
-
             string path = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
 
             /* TODO: use commandline arguments */
             Bitmap img = new Bitmap($"{path}\\..\\Tests\\Resources\\Square.png");
             ImageManipulator im = new ImageManipulator(img);
-            im.Brightness(-100);
+            im.Blur(); im.Blur(); im.Blur(); im.Blur(); im.Blur();
             Bitmap ret = im.ToBitmap();
             ret.Save($"{path}\\Output\\output.jpg");
-        }
-
-        static private void SetParallelismToCoreCount()
-        {
-            ParallelOptions options = new ParallelOptions();
-            options.MaxDegreeOfParallelism = System.Environment.ProcessorCount;
         }
     }
 }

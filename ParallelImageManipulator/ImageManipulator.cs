@@ -46,6 +46,54 @@ namespace ParallelImageManipulator
             return bitmap;
         }
 
+        // Simple fixed box blur with 3x3 kernel of 1/9
+        public void Blur()
+        {
+            Color[,] tmpPixels = new Color[Height, Width];
+            // Doing this in two parts:
+            // 1: Calculate 1/9 of each pixel
+            // 2: Use these values for blur values of pixels
+            Parallel.For(0, Width, x =>
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    double oneNinth = 1.0 / 9.0;
+                    Color px = pixels[x, y];
+                    int A = (int)(oneNinth * px.A);
+                    int R = (int)(oneNinth * px.R);
+                    int G = (int)(oneNinth * px.G);
+                    int B = (int)(oneNinth * px.B);
+
+                    Color newPx = Color.FromArgb(A, R, G, B);
+                    tmpPixels[x, y] = newPx;
+                }
+            });
+            Parallel.For(0, Width, x =>
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    Color px = tmpPixels[x, y];
+
+                    int A = 0, R = 0, G = 0, B = 0;
+                    // Iterate through neighbors
+                    for(int i = -1; i++ <= 1; )
+                    {
+                        if (x - i < 0 || x - 1 - i > Width) continue;
+                        for (int j = -1; j++ <= 1;)
+                        {
+                            if (y - j < 0 || y - 1 - j > Width) continue;
+                            A += tmpPixels[x - i, y - j].A;
+                            R += tmpPixels[x - i, y - j].R;
+                            G += tmpPixels[x - i, y - j].G;
+                            B += tmpPixels[x - i, y - j].B;
+                        }
+                    }
+                    // replace pixels
+                    pixels[x,y] = Color.FromArgb(A, R, G, B);
+                }
+            });
+        }
+
         // Rec. 709 grayscaale
         public void Grayscale()
         {
