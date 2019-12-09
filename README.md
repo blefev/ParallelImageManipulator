@@ -32,22 +32,23 @@ A request specifies a base64 data URI image, the transformation to apply, and ar
 
 Here is a simple Grayscale request:
 
-```javascript
+```json
 {
   "image": "data:image/jpg;base64,<base64 image string>"
   "filter": "grayscale"
 }
 ```
 
-These are the transformations that require arguments:
+### Specification
+Here are the available transformations and required arguments:
 
 | Transformation  |  Arguments |
 |---|---|
 | grayscale |   |
+| negate |  |
 | flip | horizontal (boolean) |
 | rotate | clockwise (boolean), rotates (number of times to rotate - positive integer) |
 | filter | color ("R", "G", or "B" |
-| negate |  |
 | blur | neighborDist (positive integer. controls neighbor pixel distance to us for blur) |
 | brightness | value (integer between -255 to 255) |
 
