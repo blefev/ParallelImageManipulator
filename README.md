@@ -63,7 +63,7 @@ Here are the available transformations and required arguments:
 | negate |  |
 | flip | horizontal (boolean) |
 | rotate | clockwise (boolean), rotates (number of times to rotate - positive integer) |
-| filter | color ("R", "G", or "B" |
+| filter | color ("R", "G", or "B") |
 | blur | neighborDist (positive integer. controls neighbor pixel distance to us for blur) |
 | brightness | value (integer between -255 to 255) |
 
