@@ -45,7 +45,7 @@ Here is an example of a request with arguments:
   "image": "data:image/jpg;base64,<base64 image string>",
   "filter": "rotate",
   "args": {
-    "clockwise": true
+    "clockwise": true,
     "rotates": 1
   }
 }
