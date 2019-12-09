@@ -24,6 +24,9 @@ static void Main(string[] args)
 ```
 
 ## Web API
+To run the API, build and run the "WebServer" project. To specify a different URI, modify it in `Program.cs`.
+We recommend using Postman to play with the API. You can see live requests as they come into the API.
+
 The API runs on the custom, minimal webserver we created under the "WebServer" project. 
 
 The API handles all requests at the base path. By default it runs at `http://localhost:9410`.
@@ -50,6 +53,9 @@ Here is an example of a request with arguments:
   }
 }
 ```
+### Using in a website
+
+The API returns Data URI images that are ready-to-use in HTML img tags. Simply use Javascript to perform an Ajax request to the API, and put the returned image string into the `src` of an HTML `img` element.
 
 ### Specification
 
@@ -67,3 +73,6 @@ Here are the available transformations and required arguments:
 | blur | neighborDist (positive integer. controls neighbor pixel distance to use for blur) |
 | brightness | value (integer between -255 to 255) |
 
+## Web UI
+
+To launch the WebUI, simply build the PIMWebsite project and Right Click -> View -> View in Browser. Follow the instructions to use the UI. Note that it is a very limited UI. You have to upload an image, then optionally enter parameters and select a single transformation to run. It will then display the result.
