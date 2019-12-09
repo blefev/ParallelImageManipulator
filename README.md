@@ -1,5 +1,6 @@
 # ParallelImageManipulator
 CSC-410 Final Project
+[img](https://raw.githubusercontent.com/blefev/ParallelImageManipulator/master/Tests/Resources/Square.png)
 
 # Usage
 The best way to use the Image Manipulator is either by using the class in a C# application, or through the web server + API. All development work was done in Visual Studio 2019.
@@ -83,5 +84,5 @@ Simply right-click the Tests project in Visual Studio and select "Run Tests". No
 ### Testing Performance
 Use git to checkout to the `nonparallel` branch. You can then run the `TestPerformance` test and click "View More Output" when the test completes to see the average time of each operation. Then, repeat these steps with the `parallelspeedtest` branch.
 
-~[img](https://raw.githubusercontent.com/blefev/ParallelImageManipulator/master/Tests/Resources/Square.png)
+
 
