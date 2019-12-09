@@ -34,7 +34,7 @@ Here is a simple Grayscale request:
 
 ```json
 {
-  "image": "data:image/jpg;base64,<base64 image string>"
+  "image": "data:image/jpg;base64,<base64 image string>",
   "filter": "grayscale"
 }
 ```
