@@ -37,7 +37,8 @@ namespace PIMWebsite
                 IM.Filter(ddlFilter.SelectedValue);
 
                 MemoryStream ms = new MemoryStream();
-                Img.Save(ms, ImageFormat.Gif);
+                Bitmap ImgModified = IM.ToBitmap();
+                ImgModified.Save(ms, ImageFormat.Gif);
                 var base64Data = Convert.ToBase64String(ms.ToArray());
                 imgCtrl.Src = "data:image/gif;base64," + base64Data;
                 imgCtrl.Visible = true;
@@ -58,7 +59,8 @@ namespace PIMWebsite
                 // False if 90-factor clockwise (right), True if 90-factor counter-clockwise (left)
                 IM.Rotate(Convert.ToInt32(txtRotateTimes.Text), Convert.ToBoolean(radbtnRotateDirection.SelectedValue));
                 MemoryStream ms = new MemoryStream();
-                Img.Save(ms, ImageFormat.Gif);
+                Bitmap ImgModified = IM.ToBitmap();
+                ImgModified.Save(ms, ImageFormat.Gif);
                 var base64Data = Convert.ToBase64String(ms.ToArray());
                 imgCtrl.Src = "data:image/gif;base64," + base64Data;
                 imgCtrl.Visible = true;
@@ -79,7 +81,8 @@ namespace PIMWebsite
                 //true if verical, false if horizontal
                 IM.Flip(Convert.ToBoolean(radbtnFlip.SelectedValue));
                 MemoryStream ms = new MemoryStream();
-                Img.Save(ms, ImageFormat.Gif);
+                Bitmap ImgModified = IM.ToBitmap();
+                ImgModified.Save(ms, ImageFormat.Gif);
                 var base64Data = Convert.ToBase64String(ms.ToArray());
                 imgCtrl.Src = "data:image/gif;base64," + base64Data;
                 imgCtrl.Visible = true;
@@ -101,7 +104,8 @@ namespace PIMWebsite
                 Initialize();
                 IM.Negate();
                 MemoryStream ms = new MemoryStream();
-                Img.Save(ms, ImageFormat.Gif);
+                Bitmap ImgModified = IM.ToBitmap();
+                ImgModified.Save(ms, ImageFormat.Gif);
                 var base64Data = Convert.ToBase64String(ms.ToArray());
                 imgCtrl.Src = "data:image/gif;base64," + base64Data;
                 imgCtrl.Visible = true;
@@ -129,7 +133,8 @@ namespace PIMWebsite
                 Initialize();
                 IM.Grayscale();
                 MemoryStream ms = new MemoryStream();
-                Img.Save(ms, ImageFormat.Gif);
+                Bitmap ImgModified = IM.ToBitmap();
+                ImgModified.Save(ms, ImageFormat.Gif);
                 var base64Data = Convert.ToBase64String(ms.ToArray());
                 imgCtrl.Src = "data:image/gif;base64," + base64Data;
                 imgCtrl.Visible = true;
@@ -149,7 +154,8 @@ namespace PIMWebsite
                 Initialize();
                 IM.Blur();
                 MemoryStream ms = new MemoryStream();
-                Img.Save(ms, ImageFormat.Gif);
+                Bitmap ImgModified = IM.ToBitmap();
+                ImgModified.Save(ms, ImageFormat.Gif);
                 var base64Data = Convert.ToBase64String(ms.ToArray());
                 imgCtrl.Src = "data:image/gif;base64," + base64Data;
                 imgCtrl.Visible = true;
@@ -171,7 +177,8 @@ namespace PIMWebsite
                 IM.Brightness(Convert.ToInt32(txtBrightness.Text));
 
                 MemoryStream ms = new MemoryStream();
-                Img.Save(ms, ImageFormat.Gif);
+                Bitmap ImgModified = IM.ToBitmap();
+                ImgModified.Save(ms, ImageFormat.Gif);
                 var base64Data = Convert.ToBase64String(ms.ToArray());
                 imgCtrl.Src = "data:image/gif;base64," + base64Data;
                 imgCtrl.Visible = true;

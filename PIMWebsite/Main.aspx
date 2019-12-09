@@ -104,7 +104,7 @@
             <br />
         </div>
 
-        <img runat="server" id="imgCtrl" src="" width="300" height="300" visible="fale"/>
+        <img runat="server" id="imgCtrl" src="" width="300" height="600" visible="false"/>
 
 
     </form>
