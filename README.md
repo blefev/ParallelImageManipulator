@@ -2,7 +2,7 @@
 CSC-410 Final Project
 
 # Usage
-The best way to use the Image Manipulator is either by using the class in a C# application, or through the web server + API.
+The best way to use the Image Manipulator is either by using the class in a C# application, or through the web server + API. All development work was done in Visual Studio 2019.
 
 ## Class
 
@@ -75,4 +75,13 @@ Here are the available transformations and required arguments:
 
 ## Web UI
 
-To launch the WebUI, simply build the PIMWebsite project and Right Click -> View -> View in Browser. Follow the instructions to use the UI. Note that it is a very limited UI. You have to upload an image, then optionally enter parameters and select a single transformation to run. It will then display the result.
+To launch the WebUI, simply build the PIMWebsite in Visual Studio project and Right Click -> View -> View in Browser. Follow the instructions to use the UI. Note that it is a very limited UI. You have to upload an image, then optionally enter parameters and select a single transformation to run. It will then display the result.
+
+## Running Tests
+Simply right-click the Tests project in Visual Studio and select "Run Tests". Note, some of the tests use ImageMagick to test against, and some use known-good results under `Tests\Resources\Answers`.
+
+### Testing Performance
+Use git to checkout to the `nonparallel` branch. You can then run the `TestPerformance` test and click "View More Output" when the test completes to see the average time of each operation. Then, repeat these steps with the `parallelspeedtest` branch.
+
+~[img](https://raw.githubusercontent.com/blefev/ParallelImageManipulator/master/Tests/Resources/Square.png)
+
