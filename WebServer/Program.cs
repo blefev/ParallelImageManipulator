@@ -8,7 +8,7 @@ namespace WebServer
         static void Main(string[] args)
         {
             SetParallelismToCoreCount();
-            string url = "http://localhost:8080/";
+            string url = "http://localhost:9410/";
             WebServer ws = new WebServer(url, Console.Out);
             Console.WriteLine("Starting server...");
             ws.Start();
