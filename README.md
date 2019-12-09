@@ -13,13 +13,15 @@ A request specifies a base64 data URI image, the transformation to apply, and ar
 
 Here is a simple Grayscale request:
 
-```javascript
+```
 {
   "image": "data:image/jpg;base64,<base64 image string>"
   "filter": "grayscale"
-}```
+}
+```
 
 These are the transformations that require arguments:
+
 | Transformation  |  Arguments |
 |---|---|
 | grayscale |   |
