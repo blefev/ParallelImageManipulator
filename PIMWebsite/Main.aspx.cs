@@ -2,11 +2,23 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using ParallelImageManipulator;
 
 namespace PIMWebsite
 {
     public partial class Main : System.Web.UI.Page
     {
+        Bitmap Img;
+        ImageManipulator IM;
+
+        protected void Initialize()
+        {
+            //string path = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
+            string filename = Path.GetFileName(FileUpload1.FileName);
+            Img = new Bitmap(FileUpload1.PostedFile.InputStream);
+            IM = new ImageManipulator(Img);
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             lblError.Visible = false;
@@ -21,8 +33,8 @@ namespace PIMWebsite
         {
             if (FileUpload1.HasFile)
             {
-                Initilize();
-                ImageManipulator.Filter(ddlFilter.SelectedValue);
+                Initialize();
+                IM.Filter(ddlFilter.SelectedValue);
             }
             else
             {
@@ -36,9 +48,9 @@ namespace PIMWebsite
         {
             if (FileUpload1.HasFile)
             {
-                Initilize();
+                Initialize();
                 // False if 90-factor clockwise (right), True if 90-factor counter-clockwise (left)
-                ImageManipulator.Rotate(Convert.ToInt32(txtRotateTimes.Text), Convert.ToBoolean(radbtnRotateDirection.SelectedValue));
+                IM.Rotate(Convert.ToInt32(txtRotateTimes.Text), Convert.ToBoolean(radbtnRotateDirection.SelectedValue));
             }
             else
             {
@@ -54,9 +66,9 @@ namespace PIMWebsite
         {
             if (FileUpload1.HasFile)
             {
-                Initilize();
+                Initialize();
                 //true if verical, false if horizontal
-                ImageManipulator.Flip(Convert.ToBoolean(radbtnFlip.SelectedValue));
+                IM.Flip(Convert.ToBoolean(radbtnFlip.SelectedValue));
             }
             else
             {
@@ -71,8 +83,8 @@ namespace PIMWebsite
         {
             if (FileUpload1.HasFile)
             {
-                Initilize();
-                ImageManipulator.Negate();
+                Initialize();
+                IM.Negate();
             }
             else
             {
@@ -88,16 +100,7 @@ namespace PIMWebsite
             return img;
         }
 
-        protected void Initilize()
-        {
-            //string path = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
-            string filename = Path.GetFileName(FileUpload1.FileName);
-            FileUpload1.SaveAs(Server.MapPath("~/") + filename);
-            Bitmap img = new Bitmap(Server.MapPath("~/") + filename);
-            ImageManipulator im = new ImageManipulator(img);
-            //im.Rotate(90, true);
 
-        }
 
         void OutputFile(ImageManipulator im, string path)
         {
@@ -111,8 +114,8 @@ namespace PIMWebsite
         {
             if (FileUpload1.HasFile)
             {
-                Initilize();
-                ImageManipulator.Grayscale();
+                Initialize();
+                IM.Grayscale();
             }
             else
             {
