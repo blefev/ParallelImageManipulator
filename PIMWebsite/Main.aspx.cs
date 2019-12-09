@@ -35,6 +35,12 @@ namespace PIMWebsite
             {
                 Initialize();
                 IM.Filter(ddlFilter.SelectedValue);
+
+                MemoryStream ms = new MemoryStream();
+                Img.Save(ms, ImageFormat.Gif);
+                var base64Data = Convert.ToBase64String(ms.ToArray());
+                imgCtrl.Src = "data:image/gif;base64," + base64Data;
+                imgCtrl.Visible = true;
             }
             else
             {
@@ -51,14 +57,17 @@ namespace PIMWebsite
                 Initialize();
                 // False if 90-factor clockwise (right), True if 90-factor counter-clockwise (left)
                 IM.Rotate(Convert.ToInt32(txtRotateTimes.Text), Convert.ToBoolean(radbtnRotateDirection.SelectedValue));
+                MemoryStream ms = new MemoryStream();
+                Img.Save(ms, ImageFormat.Gif);
+                var base64Data = Convert.ToBase64String(ms.ToArray());
+                imgCtrl.Src = "data:image/gif;base64," + base64Data;
+                imgCtrl.Visible = true;
+
             }
             else
             {
                 lblError.Text = "Please select a file.";
                 lblError.Visible = true;
-
-
-
             }
         }
 
@@ -69,6 +78,12 @@ namespace PIMWebsite
                 Initialize();
                 //true if verical, false if horizontal
                 IM.Flip(Convert.ToBoolean(radbtnFlip.SelectedValue));
+                MemoryStream ms = new MemoryStream();
+                Img.Save(ms, ImageFormat.Gif);
+                var base64Data = Convert.ToBase64String(ms.ToArray());
+                imgCtrl.Src = "data:image/gif;base64," + base64Data;
+                imgCtrl.Visible = true;
+
             }
             else
             {
@@ -85,6 +100,12 @@ namespace PIMWebsite
             {
                 Initialize();
                 IM.Negate();
+                MemoryStream ms = new MemoryStream();
+                Img.Save(ms, ImageFormat.Gif);
+                var base64Data = Convert.ToBase64String(ms.ToArray());
+                imgCtrl.Src = "data:image/gif;base64," + base64Data;
+                imgCtrl.Visible = true;
+
             }
             else
             {
@@ -101,21 +122,18 @@ namespace PIMWebsite
         }
 
 
-
-        void OutputFile(ImageManipulator im, string path)
-        {
-            Bitmap ret = im.ToBitmap();
-            ret.Save($"{path}\\Output\\output.bmp");
-
-            lblError.Text = "Your modified file has been saved in " + $"{path}\\Output\\output.bmp";
-        }
-
         protected void btnGrayscale_Click(object sender, EventArgs e)
         {
             if (FileUpload1.HasFile)
             {
                 Initialize();
                 IM.Grayscale();
+                MemoryStream ms = new MemoryStream();
+                Img.Save(ms, ImageFormat.Gif);
+                var base64Data = Convert.ToBase64String(ms.ToArray());
+                imgCtrl.Src = "data:image/gif;base64," + base64Data;
+                imgCtrl.Visible = true;
+
             }
             else
             {
@@ -130,6 +148,12 @@ namespace PIMWebsite
             {
                 Initialize();
                 IM.Blur();
+                MemoryStream ms = new MemoryStream();
+                Img.Save(ms, ImageFormat.Gif);
+                var base64Data = Convert.ToBase64String(ms.ToArray());
+                imgCtrl.Src = "data:image/gif;base64," + base64Data;
+                imgCtrl.Visible = true;
+
             }
             else
             {
@@ -145,6 +169,13 @@ namespace PIMWebsite
             {
                 Initialize();
                 IM.Brightness(Convert.ToInt32(txtBrightness.Text));
+
+                MemoryStream ms = new MemoryStream();
+                Img.Save(ms, ImageFormat.Gif);
+                var base64Data = Convert.ToBase64String(ms.ToArray());
+                imgCtrl.Src = "data:image/gif;base64," + base64Data;
+                imgCtrl.Visible = true;
+
             }
             else
             {

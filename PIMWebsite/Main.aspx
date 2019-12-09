@@ -22,10 +22,10 @@
             <br />
             <asp:Label ID="Label9" runat="server" Text="Once you have selected a file, you may choose one of the following options to modify your image. "></asp:Label>
             <br />
-            <asp:Label ID="Label10" runat="server" Text="After your image has been modified, you can locate it in the source directory. "></asp:Label>
+            <asp:Label ID="Label10" runat="server" Text="After your image has been modified, it will appear below. "></asp:Label>
 
         </div>
-       
+
         <div>________________________________________________________________________________________</div>
 
         <div>
@@ -103,6 +103,10 @@
             <asp:Button ID="btnBrightness" runat="server" Text="Brightness" OnClick="btnBrightness_Click" />
             <br />
         </div>
+
+        <img runat="server" id="imgCtrl" src="" width="300" height="300" visible="fale"/>
+
+
     </form>
 </body>
 </html>
