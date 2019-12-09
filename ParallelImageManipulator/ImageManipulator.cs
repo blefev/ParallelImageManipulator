@@ -94,10 +94,9 @@ namespace ParallelImageManipulator
                         }
                     }
                     // replace pixels
-                    tmpPixels[x, y] = Color.FromArgb(A, R, G, B);
+                    pixels[x, y] = Color.FromArgb(A, R, G, B);
                 }
             });
-            pixels = tmpPixels;
         }
 
         // Rec. 709 grayscaale
