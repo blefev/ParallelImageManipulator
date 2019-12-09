@@ -123,5 +123,35 @@ namespace PIMWebsite
                 lblError.Visible = true;
             }
         }
+
+        protected void btnBlur_Click(object sender, EventArgs e)
+        {
+            if (FileUpload1.HasFile)
+            {
+                Initialize();
+                IM.Blur();
+            }
+            else
+            {
+                lblError.Text = "Please select a file.";
+                lblError.Visible = true;
+
+            }
+        }
+
+        protected void btnBrightness_Click(object sender, EventArgs e)
+        {
+            if (FileUpload1.HasFile)
+            {
+                Initialize();
+                IM.Brightness(Convert.ToInt32(txtBrightness.Text));
+            }
+            else
+            {
+                lblError.Text = "Please select a file.";
+                lblError.Visible = true;
+
+            }
+        }
     }
 }
