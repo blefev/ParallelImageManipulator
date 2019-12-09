@@ -26,7 +26,7 @@ static void Main(string[] args)
 ## Web API
 The API runs on the custom, minimal webserver we created under the "WebServer" project. 
 
-The API handles all requests at the base path. By default it runs at http://localhost:9410.
+The API handles all requests at the base path. By default it runs at `http://localhost:9410`.
 
 A request specifies a base64 data URI image, the transformation to apply, and arguments if required.
 
@@ -39,7 +39,22 @@ Here is a simple Grayscale request:
 }
 ```
 
+Here is an example of a request with arguments:
+```json
+{
+  "image": "data:image/jpg;base64,<base64 image string>",
+  "filter": "rotate",
+  "args": {
+    "clockwise": true
+    "rotates": 1
+  }
+}
+```
+
 ### Specification
+
+All requests must use the `POST` method, and are sent to the base URI of the webserver. By default `http://localhost:9410`.
+
 Here are the available transformations and required arguments:
 
 | Transformation  |  Arguments |
