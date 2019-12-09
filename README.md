@@ -1,6 +1,14 @@
 # ParallelImageManipulator
-CSC-410 Final Project
-[img](https://raw.githubusercontent.com/blefev/ParallelImageManipulator/master/Tests/Resources/Square.png)
+CSC-410 Final Project  
+
+Authors:
+* Brendan Lefevre
+* Giana Guarascio
+* Teresa Bitterman
+* Caitlin Rudolph
+* Hunter Comer
+
+![img](https://raw.githubusercontent.com/blefev/ParallelImageManipulator/master/Tests/Resources/Square.png)
 
 # Usage
 The best way to use the Image Manipulator is either by using the class in a C# application, or through the web server + API. All development work was done in Visual Studio 2019.
